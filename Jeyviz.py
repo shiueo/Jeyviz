@@ -56,6 +56,28 @@ async def on_ready():
     await bot.tree.sync()
 
 
+@bot.event
+async def on_message(message: discord.Message):
+    if message.author == bot.user or message.author.bot:
+        return
+    await bot.process_commands(message)
+
+
+@bot.event
+async def on_command_completion(context: Context):
+    full_command_name = context.command.qualified_name
+    split = full_command_name.split(" ")
+    executed_command = str(split[0])
+    if context.guild is not None:
+        bot.logger.info(
+            f"Executed {executed_command} command in {context.guild.name} (ID: {context.guild.id}) by {context.author} (ID: {context.author.id})"
+        )
+    else:
+        bot.logger.info(
+            f"Executed {executed_command} command by {context.author} (ID: {context.author.id}) in DMs"
+        )
+
+
 async def load_cogs():
     for file in os.listdir("cogs"):
         if file.endswith(".py"):
@@ -66,6 +88,7 @@ async def load_cogs():
             except Exception as e:
                 exception = f"{type(e).__name__}: {e}"
                 bot.logger.error(f"Failed to load extension {extension}\n{exception}")
+
 
 asyncio.run(load_cogs())
 bot.run(config["token"])

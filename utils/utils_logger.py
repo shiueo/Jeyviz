@@ -5,6 +5,7 @@ class LoggingFormatter(logging.Formatter):
     # Colors
     black = "\x1b[30m"
     white = "\x1b[37m"
+    light_magenta = "\x1b[95m"
     red = "\x1b[31m"
     green = "\x1b[32m"
     yellow = "\x1b[33m"
@@ -24,8 +25,8 @@ class LoggingFormatter(logging.Formatter):
 
     def format(self, record):
         log_color = self.COLORS[record.levelno]
-        format_s = "(white){asctime}(reset) (level-color){levelname:<8}(reset) (green){name}(reset) {message}"
-        format_s = format_s.replace("(white)", self.white + self.bold)
+        format_s = "(light_magenta){asctime}(reset) (level-color){levelname:<8}(reset) (green){name}(reset) {message}"
+        format_s = format_s.replace("(light_magenta)", self.light_magenta + self.bold)
         format_s = format_s.replace("(reset)", self.reset)
         format_s = format_s.replace("(level-color)", log_color)
         format_s = format_s.replace("(green)", self.green + self.bold)
