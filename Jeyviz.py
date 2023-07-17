@@ -99,7 +99,7 @@ async def load_cogs():
 
 @tasks.loop(minutes=1.0)
 async def status_task():
-    statuses = ["with you!", "with shiüo!", "with users!"]
+    statuses = ["with you!", "with shiüo!", "with users!", "Geometry Dash", "Osu!"]
     await bot.change_presence(activity=discord.Game(random.choice(statuses)))
 
 
