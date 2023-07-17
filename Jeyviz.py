@@ -1,3 +1,4 @@
+import asyncio
 import json
 import logging
 import os
@@ -51,6 +52,8 @@ async def on_ready():
     bot.logger.info(f"Python version: {platform.python_version()}")
     bot.logger.info(f"Running on: {platform.system()} {platform.release()} ({os.name})")
     bot.logger.info("-------------------")
+    bot.logger.info("Syncing commands globally...")
+    await bot.tree.sync()
 
 
 async def load_cogs():
@@ -64,5 +67,5 @@ async def load_cogs():
                 exception = f"{type(e).__name__}: {e}"
                 bot.logger.error(f"Failed to load extension {extension}\n{exception}")
 
-
+asyncio.run(load_cogs())
 bot.run(config["token"])
