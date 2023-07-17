@@ -26,6 +26,8 @@ bot = Bot(
     help_command=None
 )
 bot.config = config
+bot.color_main = int(config['color_main'], 16)
+bot.color_cancel = int(config['color_cancel'], 16)
 
 logger = logging.getLogger("Jeyviz_bot")
 logger.setLevel(logging.INFO)

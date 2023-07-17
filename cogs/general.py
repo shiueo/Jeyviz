@@ -1,5 +1,5 @@
+import os
 import platform
-
 import discord
 
 from discord.ext import commands
@@ -16,7 +16,7 @@ class General(commands.Cog, name="general"):
     async def help(self, context: Context):
         prefix = self.bot.config["prefix"]
         embed = discord.Embed(
-            title="Help", description="List of available commands:", color=0xFF0A54
+            title="Help", description="List of available commands:", color=self.bot.color_main
         )
         for i in self.bot.cogs:
             cog = self.bot.get_cog(i.lower())
@@ -37,18 +37,18 @@ class General(commands.Cog, name="general"):
     )
     async def botinfo(self, context: Context):
         embed = discord.Embed(
-            description="디스코드 안 작은 세상! Jeyviz가 여러분을 초대합니다!",
-            color=0xFF0A54,
+            description="[디스코드 안 작은 세상! 가상세계 Natzhashite로 Jeyviz가 여러분을 초대합니다!](https://jeyviz.vercel.app/)",
+            color=self.bot.color_main,
         )
         embed.set_author(name="Bot Information")
-        embed.add_field(name="Owner:", value="shiueo", inline=True)
         embed.add_field(
-            name="Python Version:", value=f"{platform.python_version()}", inline=True
+            name="Prefix:", value="/ (Slash Commands) or +", inline=True
         )
         embed.add_field(
-            name="Prefix:",
-            value=f"/ (Slash Commands) or {self.bot.config['prefix']} for normal commands",
-            inline=False,
+            name="Written in:", value=f"Python {platform.python_version()}", inline=True
+        )
+        embed.add_field(
+            name="Running on:", value=f"{platform.system()} {platform.release()} ({os.name})", inline=True
         )
         embed.set_footer(text=f"Requested by {context.author}")
         await context.send(embed=embed)
@@ -60,7 +60,7 @@ class General(commands.Cog, name="general"):
     async def dev(self, context: Context):
         embed = discord.Embed(
             description="Jeyviz 제작에 기여하신 분들입니다.",
-            color=0xFF0A54,
+            color=self.bot.color_main,
         )
         embed.set_author(name="Dev")
         embed.set_image(url="https://github.com/shiueo/shiueo/raw/main/pfp/shiueo_wallpaper_v4.png")
