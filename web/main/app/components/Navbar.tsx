@@ -40,7 +40,7 @@ export default function Navbar() {
               </ul>
             </li>
             <li>
-              <a>Item 3</a>
+            <Link href="https://jeyviz-docs.vercel.app/">도움말</Link>
             </li>
           </ul>
         </div>
