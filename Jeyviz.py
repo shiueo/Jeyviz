@@ -25,8 +25,11 @@ bot = Bot(
     intents=intents,
     help_command=None
 )
+
 bot.config = config
+bot.abs_path = os.path.dirname(__file__)
 bot.color_main = int(config['color_main'], 16)
+bot.color_success = int(config['color_success'], 16)
 bot.color_cancel = int(config['color_cancel'], 16)
 
 logger = logging.getLogger("Jeyviz_bot")
