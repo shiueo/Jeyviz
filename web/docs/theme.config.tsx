@@ -2,16 +2,16 @@ import React from 'react'
 import { DocsThemeConfig } from 'nextra-theme-docs'
 
 const config: DocsThemeConfig = {
-  logo: <span>My Project</span>,
+  logo: <span>Jeyviz Docs</span>,
   project: {
-    link: 'https://github.com/shuding/nextra-docs-template',
+    link: 'https://github.com/shiueo/Jeyviz',
   },
   chat: {
-    link: 'https://discord.com',
+    link: 'https://discord.gg/NXwVfdcygM',
   },
   docsRepositoryBase: 'https://github.com/shuding/nextra-docs-template',
   footer: {
-    text: 'Nextra Docs Template',
+    text: 'Copyright © 2023-present - All right reserved by shiüo',
   },
 }
 
