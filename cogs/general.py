@@ -16,7 +16,7 @@ class General(commands.Cog, name="general"):
     async def help(self, context: Context):
         prefix = self.bot.config["prefix"]
         embed = discord.Embed(
-            title="Help", description="List of available commands:", color=0x9C84EF
+            title="Help", description="List of available commands:", color=0xFF0A54
         )
         for i in self.bot.cogs:
             cog = self.bot.get_cog(i.lower())
@@ -38,7 +38,7 @@ class General(commands.Cog, name="general"):
     async def botinfo(self, context: Context):
         embed = discord.Embed(
             description="디스코드 안 작은 세상! Jeyviz가 여러분을 초대합니다!",
-            color=0x9C84EF,
+            color=0xFF0A54,
         )
         embed.set_author(name="Bot Information")
         embed.add_field(name="Owner:", value="shiueo", inline=True)
@@ -50,6 +50,22 @@ class General(commands.Cog, name="general"):
             value=f"/ (Slash Commands) or {self.bot.config['prefix']} for normal commands",
             inline=False,
         )
+        embed.set_footer(text=f"Requested by {context.author}")
+        await context.send(embed=embed)
+
+    @commands.hybrid_command(
+        name="개발자",
+        description="Jeyviz의 제작자들",
+    )
+    async def dev(self, context: Context):
+        embed = discord.Embed(
+            description="Jeyviz 제작에 기여하신 분들입니다.",
+            color=0xFF0A54,
+        )
+        embed.set_author(name="Dev")
+        embed.set_image(url="https://github.com/shiueo/shiueo/raw/main/pfp/shiueo_wallpaper_v4.png")
+        embed.add_field(name="Head", value="[shiueo](https://www.youtube.com/@shiueo)", inline=True)
+        embed.add_field(name="Contributors", value="", inline=True)
         embed.set_footer(text=f"Requested by {context.author}")
         await context.send(embed=embed)
 
