@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from 'next/link'
 
 export default function Home() {
   return (
@@ -7,19 +8,17 @@ export default function Home() {
         className="min-h-screen hero"
         style={{
           backgroundImage:
-            "url(https://daisyui.com/images/stock/photo-1507358522600-9f71e620c44e.jpg)",
+            "url(./shiueo_wallpaper_v4.png)",
         }}
       >
-        <div className="hero-overlay bg-opacity-60"></div>
+        <div className="bg-opacity-50 hero-overlay"></div>
         <div className="text-center hero-content text-neutral-content">
-          <div className="max-w-md">
-            <h1 className="mb-5 text-5xl font-bold">Hello there</h1>
+          <div className="max-w-5xl">
+            <h1 className="mb-5 text-3xl font-bold">활기찬 가상세계 Natzhashite의 시민이 되어보시는 건 어떤가요?</h1>
             <p className="mb-5">
-              Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-              excepturi exercitationem quasi. In deleniti eaque aut repudiandae
-              et a id nisi.
+            Natzhashite의 심장부! 대도시 Schtarn에서 만나요!
             </p>
-            <button className="btn btn-primary">Get Started</button>
+            <Link href="https://discord.gg/NXwVfdcygM" className="btn">가자!</Link>
           </div>
         </div>
       </div>
