@@ -11,7 +11,7 @@ class General(commands.Cog, name="general"):
         self.bot = bot
 
     @commands.hybrid_command(
-        name="help", description="List all commands the bot has loaded."
+        name="명령어", description="List all commands the bot has loaded."
     )
     async def help(self, context: Context):
         prefix = self.bot.config["prefix"]
@@ -32,17 +32,12 @@ class General(commands.Cog, name="general"):
         await context.send(embed=embed)
 
     @commands.hybrid_command(
-        name="botinfo",
+        name="정보",
         description="Get some useful (or not) information about the bot.",
     )
-    async def botinfo(self, context: Context) -> None:
-        """
-        Get some useful (or not) information about the bot.
-
-        :param context: The hybrid command context.
-        """
+    async def botinfo(self, context: Context):
         embed = discord.Embed(
-            description="Jeyviz_information",
+            description="디스코드 안 작은 세상! Jeyviz가 여러분을 초대합니다!",
             color=0x9C84EF,
         )
         embed.set_author(name="Bot Information")

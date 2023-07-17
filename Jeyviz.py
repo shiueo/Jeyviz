@@ -3,6 +3,7 @@ import json
 import logging
 import os
 import platform
+import random
 import sys
 import discord as discord
 
@@ -53,6 +54,7 @@ async def on_ready():
     bot.logger.info(f"Running on: {platform.system()} {platform.release()} ({os.name})")
     bot.logger.info("-------------------")
     bot.logger.info("Syncing commands globally...")
+    status_task.start()
     await bot.tree.sync()
 
 
@@ -88,6 +90,12 @@ async def load_cogs():
             except Exception as e:
                 exception = f"{type(e).__name__}: {e}"
                 bot.logger.error(f"Failed to load extension {extension}\n{exception}")
+
+
+@tasks.loop(minutes=1.0)
+async def status_task():
+    statuses = ["with you!", "with shiüo!", "with users!"]
+    await bot.change_presence(activity=discord.Game(random.choice(statuses)))
 
 
 asyncio.run(load_cogs())
