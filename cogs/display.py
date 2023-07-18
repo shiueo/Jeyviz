@@ -66,7 +66,7 @@ class StatesOptions(discord.ui.Select):
             data = json.load(f)
 
             embed = discord.Embed(
-                title=f"{user_choice}주의 정보", description="", color=self.bot.color_main
+                title=f"{user_choice} 주의 정보", description="", color=self.bot.color_main
             )
 
             embed.add_field(
@@ -114,7 +114,7 @@ class Display(commands.Cog, name="display"):
                     name="이름", value=data['name']
                 )
                 embed.add_field(
-                    name="재산", value=f"{data['money']}", inline=True
+                    name="재산", value=f"{data['money']}SCU", inline=True
                 )
                 if data['primary_house']:
                     primary_house = data['primary_house']

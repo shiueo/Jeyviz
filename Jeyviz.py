@@ -77,6 +77,19 @@ async def on_message(message: discord.Message):
 
 
 @bot.event
+async def on_command_error(context: Context, error):
+    if isinstance(error, commands.CommandOnCooldown):
+        minutes, seconds = divmod(error.retry_after, 60)
+        hours, minutes = divmod(minutes, 60)
+        hours = hours % 24
+        embed = discord.Embed(
+            description=f"이 명령어는 {f'{round(hours)} 시간' if round(hours) > 0 else ''} {f'{round(minutes)} 분' if round(minutes) > 0 else ''} {f'{round(seconds)} 초' if round(seconds) > 0 else ''} 뒤에 다시 사용하실 수 있습니다.",
+            color=bot.color_cancel,
+        )
+        await context.send(embed=embed)
+
+
+@bot.event
 async def on_command_completion(context: Context):
     full_command_name = context.command.qualified_name
     split = full_command_name.split(" ")

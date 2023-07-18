@@ -97,6 +97,7 @@ class Userdata(commands.Cog, name="userdata"):
     @commands.hybrid_command(
         name="sid_삭제_요청", description="SID 삭제를 요청합니다."
     )
+    @commands.cooldown(1, 14400, commands.BucketType.user)
     async def signout(self, context: Context):
         if os.path.isfile(f"{self.bot.abs_path}/database/users/{context.author.id}.json"):
             embed = discord.Embed(
