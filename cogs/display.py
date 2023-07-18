@@ -6,6 +6,8 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Context
 
+from utils.utils_numunit import number_formatter
+
 
 class StatesOptions(discord.ui.Select):
     def __init__(self, bot, author):
@@ -70,7 +72,7 @@ class StatesOptions(discord.ui.Select):
             )
 
             embed.add_field(
-                name="초기 정착 지원 자금", value=f"{data['initial_support_money']}", inline=True
+                name="초기 정착 지원 자금", value=f"{number_formatter(str(data['initial_support_money']))} SCU", inline=True
             )
             embed.add_field(
                 name="주 전체 면적", value=f"{(data['grid_x']+1) * (data['grid_y']+1)} S2DU", inline=True
@@ -114,7 +116,7 @@ class Display(commands.Cog, name="display"):
                     name="이름", value=data['name']
                 )
                 embed.add_field(
-                    name="재산", value=f"{data['money']}SCU", inline=True
+                    name="재산", value=f"{number_formatter(str(data['money']))} SCU", inline=True
                 )
                 if data['primary_house']:
                     primary_house = data['primary_house']
