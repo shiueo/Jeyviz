@@ -73,6 +73,8 @@ class Userdata(commands.Cog, name="userdata"):
                     'employed_company': [],
                     'primary_house': [chosen_state, new_house_x, new_house_y],
                     'owned_house': [],
+                    'happiness': 100,
+                    'health': 100
                 }
                 with open(f"{self.bot.abs_path}/database/users/{context.author.id}.json", 'w') as f:
                     json.dump(data, f)

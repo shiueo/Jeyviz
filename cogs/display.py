@@ -60,6 +60,14 @@ class Display(commands.Cog, name="display"):
                 embed.add_field(
                     name="채용된 회사", value=employed_company
                 )
+
+                embed.add_field(
+                    name="행복도", value=data['happiness']
+                )
+
+                embed.add_field(
+                    name="건강도", value=data['health']
+                )
                 await context.send(embed=embed)
         else:
             embed = discord.Embed(
