@@ -6,6 +6,8 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Context
 
+from utils.utils_numunit import number_formatter
+
 
 class YesOrNo(discord.ui.View):
     def __init__(self, author):
@@ -135,13 +137,13 @@ class ForDev(commands.Cog, name="for_dev"):
             await context.send(embed=embed)
 
     @commands.hybrid_command(
-        name="dev_sid_add_money", description="해당 유저의 SID에 주어진 수만큼 SCU를 추가합니다."
+        name="dev_sid_add_money", description=f"해당 유저의 SID에 주어진 수만큼 화폐를 추가합니다."
     )
     async def dev_sid_add_money(self, context: Context, user: discord.User, money: int):
         if str(context.author.id) in self.bot.owners:
             member = context.guild.get_member(user.id) or await context.guild.fetch_member(user.id)
             embed = discord.Embed(
-                title="금액 충전", description=f"{member}의 SID에 {money}SCU를 추가합니다.", color=self.bot.color_main
+                title="금액 충전", description=f"{member}의 SID에 {money}{self.bot.money_unit}를 추가합니다.", color=self.bot.color_main
             )
             choice = YesOrNo(context.author)
             message = await context.send(embed=embed, view=choice)
@@ -156,7 +158,7 @@ class ForDev(commands.Cog, name="for_dev"):
                         json.dump(data, f)
 
                     embed = discord.Embed(
-                        title="성공", description=f"성공적으로 {money}SCU를 {member}의 SID에 추가하였습니다.",
+                        title="성공", description=f"성공적으로 {money}{self.bot.money_unit}를 {member}의 SID에 추가하였습니다.",
                         color=self.bot.color_success
                     )
                     await message.edit(embed=embed, view=None, content=None)
@@ -193,9 +195,20 @@ class ForDev(commands.Cog, name="for_dev"):
                     all_spaces += (data['grid_x']+1)*(data['grid_y']+1)
                     all_occupied_spaces += len(data['occupied_coordinates'])
 
+            all_user_money = 0
+            all_user_num = 0
+            for user_file in os.listdir("database/users"):
+                if user_file.endswith(".json"):
+                    with open(f"./database/users/{user_file}", 'r') as file:
+                        data = json.load(file)
+                        all_user_money += data['money']
+                        all_user_num += 1
+
             embed.add_field(name="Spaces", value=f"{all_occupied_spaces}/{all_spaces}", inline=True)
 
-            embed.add_field(name="Users", value=len(os.listdir(f"{self.bot.abs_path}/database/users")), inline=True)
+            embed.add_field(name="Users", value=f"{all_user_num}", inline=True)
+
+            embed.add_field(name="개인 소유의 전체 재화량", value=f"{number_formatter(str(all_user_money))} {self.bot.money_unit}", inline=True)
 
             await context.send(embed=embed)
         else:

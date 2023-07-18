@@ -34,6 +34,7 @@ bot.color_cancel = int(config['color_cancel'], 16)
 bot.dev_banner_url = config['dev_banner_url']
 bot.owners = config['owners']
 bot.states = config['states']
+bot.money_unit = config['money_unit']
 
 for state in bot.states:
     exec(f"bot.{state}_initial_money = config['{state}_initial_money']")
