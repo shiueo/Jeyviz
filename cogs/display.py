@@ -10,9 +10,8 @@ from utils.utils_numunit import number_formatter
 
 
 class StatesOptions(discord.ui.Select):
-    def __init__(self, bot, author):
+    def __init__(self, bot):
         self.bot = bot
-        self.author = author
         options = [
             discord.SelectOption(
                 label="Ashan", description="something"
@@ -33,7 +32,7 @@ class StatesOptions(discord.ui.Select):
                 label="Novorsk", description="something"
             ),
             discord.SelectOption(
-                label="Quadrian", description="something"
+                label="Quadrian", description="Quadrian은 Natzhashite의 서남부에 자리한 매우 발전된 지역 중 하나로, 탄탄한 기반시설과 다양한 편의시설을 제공합니다."
             ),
             discord.SelectOption(
                 label="Realmz", description="something"
@@ -42,7 +41,7 @@ class StatesOptions(discord.ui.Select):
                 label="Rocktz", description="something"
             ),
             discord.SelectOption(
-                label="Schtarn", description="something"
+                label="Schtarn", description="Schtarn은 Natzhashite의 중심부에 자리 잡은 매우 현대적이고 번화한 도심 지역입니다."
             ),
             discord.SelectOption(
                 label="Tetrin", description="something"
@@ -51,14 +50,14 @@ class StatesOptions(discord.ui.Select):
                 label="Utenie", description="something"
             ),
             discord.SelectOption(
-                label="Zhalka", description="something"
+                label="Zhalka", description="Zhalka는 Natzhashite의 변두리에 위치한 지역으로, 경제적으로 유리한 면을 갖추고 있습니다."
             ),
         ]
         super().__init__(
             placeholder="Choose...",
             min_values=1,
             max_values=1,
-            options=options
+            options=options,
         )
 
     async def callback(self, interaction: discord.Interaction):
@@ -85,14 +84,15 @@ class StatesOptions(discord.ui.Select):
                 embed=embed, content=None, view=None
             )
 
-    async def interaction_check(self, interaction: discord.Interaction):
-        return interaction.user.id == self.author.id
-
 
 class StateOptionsView(discord.ui.View):
     def __init__(self, bot, author):
         super().__init__()
-        self.add_item(StatesOptions(bot, author))
+        self.author = author
+        self.add_item(StatesOptions(bot))
+
+    async def interaction_check(self, interaction: discord.Interaction):
+        return interaction.user.id == self.author.id
 
 
 class Display(commands.Cog, name="display"):
@@ -171,7 +171,7 @@ class Display(commands.Cog, name="display"):
                 await context.send(embed=embed)
         else:
             embed = discord.Embed(
-                title="SID가 존재하지 않습니다.", description="SID 요청을 위해서는 ``sid_요청`` 명령어를 사용해주세요.",
+                title="SID가 존재하지 않습니다.", description="SID 신청을 위해서는 ``sid_신청`` 명령어를 사용해주세요.",
                 color=self.bot.color_cancel
             )
             await context.send(embed=embed)
@@ -186,7 +186,7 @@ class Display(commands.Cog, name="display"):
             await context.send("조회할 주를 선택해주세요.", view=view)
         else:
             embed = discord.Embed(
-                title="SID가 존재하지 않습니다.", description="SID 요청을 위해서는 ``sid_요청`` 명령어를 사용해주세요.",
+                title="SID가 존재하지 않습니다.", description="SID 신청을 위해서는 ``sid_신청`` 명령어를 사용해주세요.",
                 color=self.bot.color_cancel
             )
             await context.send(embed=embed)
