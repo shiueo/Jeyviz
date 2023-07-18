@@ -35,8 +35,20 @@ class ForDev(commands.Cog, name="for_dev"):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.hybrid_command(
-        name="dev_sid_삭제", description="해당 유저의 SID를 삭제합니다."
+    @commands.hybrid_group(
+        name="데브",
+        description="DEV계열을 위한 명령어들.",
+    )
+    async def dev(self, context: Context) -> None:
+        if context.invoked_subcommand is None:
+            embed = discord.Embed(
+                description="서브 커맨드를 정확히 확인해주세요.",
+                color=self.bot.color_cancel,
+            )
+            await context.send(embed=embed)
+
+    @dev.command(
+        name="sid_삭제", description="해당 유저의 SID를 삭제합니다."
     )
     async def dev_sid_delete(self, context: Context, user: discord.User):
         if str(context.author.id) in self.bot.owners:
@@ -88,8 +100,8 @@ class ForDev(commands.Cog, name="for_dev"):
             )
             await context.send(embed=embed)
 
-    @commands.hybrid_command(
-        name="dev_모든_주_초기화", description="모든 주의 변수를 초기 설정 값으로 되돌립니다."
+    @dev.command(
+        name="모든_주_초기화", description="모든 주의 변수를 초기 설정 값으로 되돌립니다."
     )
     async def dev_states_reset(self, context: Context):
         if str(context.author.id) in self.bot.owners:
@@ -136,10 +148,10 @@ class ForDev(commands.Cog, name="for_dev"):
             )
             await context.send(embed=embed)
 
-    @commands.hybrid_command(
-        name="dev_sid_add_money", description=f"해당 유저의 SID에 주어진 수만큼 화폐를 추가합니다."
+    @dev.command(
+        name="add_money_to", description=f"해당 유저의 SID에 주어진 수만큼 화폐를 추가합니다."
     )
-    async def dev_sid_add_money(self, context: Context, user: discord.User, money: int):
+    async def dev_sid_add_money_to(self, context: Context, user: discord.User, money: int):
         if str(context.author.id) in self.bot.owners:
             member = context.guild.get_member(user.id) or await context.guild.fetch_member(user.id)
             embed = discord.Embed(
@@ -178,8 +190,8 @@ class ForDev(commands.Cog, name="for_dev"):
             )
             await context.send(embed=embed)
 
-    @commands.hybrid_command(
-        name="dev_natzhashite_dashboard", description="Natzhashite의 상태를 확인합니다."
+    @dev.command(
+        name="natzhashite_상태", description="Natzhashite의 상태를 확인합니다."
     )
     async def dev_check_natzhashite(self, context: Context):
         if str(context.author.id) in self.bot.owners:

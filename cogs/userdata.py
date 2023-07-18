@@ -34,8 +34,20 @@ class Userdata(commands.Cog, name="userdata"):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.hybrid_command(
-        name="sid_요청", description="Natzhashite에서의 신분증과 같은 SID를 요청합니다."
+    @commands.hybrid_group(
+        name="sid",
+        description="SID를 생성하거나 제거, 수정을 요청합니다.",
+    )
+    async def sid(self, context: Context) -> None:
+        if context.invoked_subcommand is None:
+            embed = discord.Embed(
+                description="서브 커맨드를 정확히 확인해주세요.",
+                color=self.bot.color_cancel,
+            )
+            await context.send(embed=embed)
+
+    @sid.command(
+        name="신청", description="Natzhashite에서의 신분증과 같은 SID 부여를 신청합니다."
     )
     async def signup(self, context: Context):
         if not os.path.isfile(f"{self.bot.abs_path}/database/users/{context.author.id}.json"):
@@ -94,8 +106,8 @@ class Userdata(commands.Cog, name="userdata"):
             )
             await context.send(embed=embed)
 
-    @commands.hybrid_command(
-        name="sid_삭제_요청", description="SID 삭제를 요청합니다."
+    @sid.command(
+        name="삭제", description="SID 삭제를 요청합니다."
     )
     @commands.cooldown(1, 14400, commands.BucketType.user)
     async def signout(self, context: Context):
