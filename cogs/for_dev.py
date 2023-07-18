@@ -48,9 +48,27 @@ class ForDev(commands.Cog, name="for_dev"):
                 await choice.wait()
                 if choice.value:
                     if os.path.isfile(f"{self.bot.abs_path}/database/users/{user.id}.json"):
+                        target_del_house = []
+                        with open(f"{self.bot.abs_path}/database/users/{user.id}.json", 'r') as f:
+                            data = json.load(f)
+                            if data['primary_house']:
+                                target_del_house.append(data['primary_house'])
+                            if data['owned_house']:
+                                target_del_house.append(data['owned_house'])
+
+                        if target_del_house:
+                            state = target_del_house[0][0]
+                            for i in target_del_house:
+                                with open(f"{self.bot.abs_path}/database/states/{i[0]}.json", 'r') as f:
+                                    data2 = json.load(f)
+                                    data2['occupied_coordinates'].remove([i[1], i[2]])
+
+                            with open(f"{self.bot.abs_path}/database/states/{state}.json", 'w') as f:
+                                json.dump(data2, f)
+
                         os.remove(f"{self.bot.abs_path}/database/users/{user.id}.json")
                         embed = discord.Embed(
-                            title="삭제 완료.", description=f"성공적으로 {member}의 SID를 삭제하였습니다.", color=self.bot.color_success
+                            title="성공", description="성공적으로 SID를 삭제하였습니다.", color=self.bot.color_success
                         )
                         await message.edit(embed=embed, view=None, content=None)
                     else:
