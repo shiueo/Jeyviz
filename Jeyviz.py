@@ -33,6 +33,10 @@ bot.color_success = int(config['color_success'], 16)
 bot.color_cancel = int(config['color_cancel'], 16)
 bot.dev_banner_url = config['dev_banner_url']
 bot.owners = config['owners']
+bot.states = config['states']
+
+for state in bot.states:
+    exec(f"bot.{state}_initial_money = config['{state}_initial_money']")
 
 logger = logging.getLogger("Jeyviz_bot")
 logger.setLevel(logging.INFO)
