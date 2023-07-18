@@ -35,6 +35,8 @@ bot.dev_banner_url = config['dev_banner_url']
 bot.owners = config['owners']
 bot.states = config['states']
 bot.money_unit = config['money_unit']
+bot.visualize_residential_block = config['visualize_residential_block']
+bot.visualize_nothing_block = config['visualize_nothing_block']
 
 for state in bot.states:
     exec(f"bot.{state}_initial_money = config['{state}_initial_money']")

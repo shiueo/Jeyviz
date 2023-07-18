@@ -62,7 +62,7 @@ class ForDev(commands.Cog, name="for_dev"):
             if choice.value:
                 if os.path.isfile(f"{self.bot.abs_path}/database/users/{user.id}.json"):
                     target_del_house = []
-                    with open(f"{self.bot.abs_path}/database/users/{user.id}.json", 'r') as f:
+                    with open(f"{self.bot.abs_path}/database/users/{context.author.id}.json", 'r') as f:
                         data = json.load(f)
                         if data['primary_house']:
                             target_del_house.append(data['primary_house'])
@@ -74,7 +74,7 @@ class ForDev(commands.Cog, name="for_dev"):
                         for i in target_del_house:
                             with open(f"{self.bot.abs_path}/database/states/{i[0]}.json", 'r') as f:
                                 data2 = json.load(f)
-                                data2['occupied_coordinates'].remove([i[1], i[2]])
+                                data2['residential'].remove([i[1], i[2]])
 
                         with open(f"{self.bot.abs_path}/database/states/{state}.json", 'w') as f:
                             json.dump(data2, f)
@@ -117,10 +117,16 @@ class ForDev(commands.Cog, name="for_dev"):
                         "initial_support_money": eval(f"self.bot.{state}_initial_money"),
                         "grid_x": 0,
                         "grid_y": 0,
-                        "occupied_coordinates": []
+                        "residential": [],
+                        "corporate": [],
+                        "industrial": [],
+                        "natural": [],
+                        "traffic": [],
+                        "security": [],
                     }
                     with open(f"{self.bot.abs_path}/database/states/{state}.json", 'w') as f:
                         json.dump(data, f)
+                    self.bot.logger.info(f"{state} 초기화 완료.")
 
                 for user_file in os.listdir(f"{self.bot.abs_path}/database/users/"):
                     if user_file.endswith(".json"):
@@ -131,12 +137,10 @@ class ForDev(commands.Cog, name="for_dev"):
                         with open(f"./database/users/{user_file}", 'w') as file:
                             json.dump(data, file)
 
-                    self.bot.logger.info(f"{state} 초기화 완료.")
-
-                    embed = discord.Embed(
-                        title="초기화 완료.", description=f"모든 주의 변수가 초기 값으로 돌아갔습니다.", color=self.bot.color_success
-                    )
-                    await message.edit(embed=embed, view=None, content=None)
+                embed = discord.Embed(
+                    title="초기화 완료.", description=f"모든 주의 변수가 초기 값으로 돌아갔습니다.", color=self.bot.color_success
+                )
+                await message.edit(embed=embed, view=None, content=None)
             else:
                 embed = discord.Embed(
                     title="취소", description="취소하셨습니다.", color=self.bot.color_cancel
@@ -155,7 +159,8 @@ class ForDev(commands.Cog, name="for_dev"):
         if str(context.author.id) in self.bot.owners:
             member = context.guild.get_member(user.id) or await context.guild.fetch_member(user.id)
             embed = discord.Embed(
-                title="금액 충전", description=f"{member}의 SID에 {money}{self.bot.money_unit}를 추가합니다.", color=self.bot.color_main
+                title="금액 충전", description=f"{member}의 SID에 {money}{self.bot.money_unit}를 추가합니다.",
+                color=self.bot.color_main
             )
             choice = YesOrNo(context.author)
             message = await context.send(embed=embed, view=choice)
@@ -204,8 +209,9 @@ class ForDev(commands.Cog, name="for_dev"):
             for state in self.bot.states:
                 with open(f"{self.bot.abs_path}/database/states/{state}.json", 'r') as f:
                     data = json.load(f)
-                    all_spaces += (data['grid_x']+1)*(data['grid_y']+1)
-                    all_occupied_spaces += len(data['occupied_coordinates'])
+                    all_spaces += (data['grid_x'] + 1) * (data['grid_y'] + 1)
+                    all_occupied_spaces += len(data['residential']) + len(data["corporate"]) + len(
+                        data["industrial"]) + len(data["natural"]) + len(data["traffic"]) + len(data["security"])
 
             all_user_money = 0
             all_user_num = 0
@@ -220,7 +226,8 @@ class ForDev(commands.Cog, name="for_dev"):
 
             embed.add_field(name="Users", value=f"{all_user_num}", inline=True)
 
-            embed.add_field(name="개인 소유의 전체 재화량", value=f"{number_formatter(str(all_user_money))} {self.bot.money_unit}", inline=True)
+            embed.add_field(name="개인 소유의 전체 재화량",
+                            value=f"{number_formatter(str(all_user_money))} {self.bot.money_unit}", inline=True)
 
             await context.send(embed=embed)
         else:

@@ -64,13 +64,14 @@ class Userdata(commands.Cog, name="userdata"):
                 with open(f"{self.bot.abs_path}/database/states/{chosen_state}.json", 'r') as f:
                     state_data = json.load(f)
                     initial_money = state_data['initial_support_money']
-                    if len(state_data['occupied_coordinates']) == state_data['grid_x'] * state_data['grid_y']:
+                    all_occupied_blocks = state_data['residential'] + state_data['corporate'] + state_data['industrial'] + state_data['natural'] + state_data['traffic'] + state_data['security']
+                    if len(all_occupied_blocks) == state_data['grid_x'] * state_data['grid_y']:
                         state_data['grid_x'] += 1
                         state_data['grid_y'] += 1
                     while 1:
                         new_house_x, new_house_y = random.randint(0, state_data['grid_x']), random.randint(0, state_data['grid_y'])
-                        if [new_house_x, new_house_y] not in state_data['occupied_coordinates']:
-                            state_data['occupied_coordinates'].append([new_house_x, new_house_y])
+                        if [new_house_x, new_house_y] not in all_occupied_blocks:
+                            state_data['residential'].append([new_house_x, new_house_y])
                             break
 
                 with open(f"{self.bot.abs_path}/database/states/{chosen_state}.json", 'w') as f:
@@ -132,7 +133,7 @@ class Userdata(commands.Cog, name="userdata"):
                     for i in target_del_house:
                         with open(f"{self.bot.abs_path}/database/states/{i[0]}.json", 'r') as f:
                             data2 = json.load(f)
-                            data2['occupied_coordinates'].remove([i[1], i[2]])
+                            data2['residential'].remove([i[1], i[2]])
 
                     with open(f"{self.bot.abs_path}/database/states/{state}.json", 'w') as f:
                         json.dump(data2, f)

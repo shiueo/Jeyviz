@@ -1,9 +1,11 @@
 import json
 import os
+import random
 
-for user_file in os.listdir("database/users"):
-    if user_file.endswith(".json"):
-        with open(f"./database/users/{user_file}", 'r') as file:
-            data = json.load(file)
-            money = data['money']
-            print(type(money))
+strwff = ""
+for i in range(8000):
+    a = random.randint(0, 100)
+    b = random.randint(0, 100)
+    strwff += f"[{a},{b}],"
+
+print(strwff)
