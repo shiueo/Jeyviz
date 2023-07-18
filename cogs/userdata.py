@@ -53,10 +53,10 @@ class Userdata(commands.Cog, name="userdata"):
                     state_data = json.load(f)
                     initial_money = state_data['initial_support_money']
                     if len(state_data['occupied_coordinates']) == state_data['grid_x'] * state_data['grid_y']:
-                        state_data['grid_x'] += 5
-                        state_data['grid_y'] += 5
+                        state_data['grid_x'] += 1
+                        state_data['grid_y'] += 1
                     while 1:
-                        new_house_x, new_house_y = random.randint(1, state_data['grid_x']+1), random.randint(1, state_data['grid_y']+1)
+                        new_house_x, new_house_y = random.randint(0, state_data['grid_x']), random.randint(0, state_data['grid_y'])
                         if [new_house_x, new_house_y] not in state_data['occupied_coordinates']:
                             state_data['occupied_coordinates'].append([new_house_x, new_house_y])
                             break
