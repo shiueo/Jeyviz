@@ -31,6 +31,8 @@ bot.abs_path = os.path.dirname(__file__)
 bot.color_main = int(config['color_main'], 16)
 bot.color_success = int(config['color_success'], 16)
 bot.color_cancel = int(config['color_cancel'], 16)
+bot.dev_banner_url = config['dev_banner_url']
+bot.owners = config['owners']
 
 logger = logging.getLogger("Jeyviz_bot")
 logger.setLevel(logging.INFO)
