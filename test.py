@@ -11,7 +11,5 @@ for i in range(6000):
 print(strwff)
 
 
-
-
-k=[3,4,2,5]
+k = [3, 4, 2, 5]
 k.remove(7)

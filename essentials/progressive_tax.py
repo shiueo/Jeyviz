@@ -19,5 +19,3 @@ def progressive_tax(val: int):
         ratio = 0.45
 
     return ratio
-
-

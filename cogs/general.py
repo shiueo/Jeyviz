@@ -16,7 +16,9 @@ class General(commands.Cog, name="general"):
     async def help(self, context: Context):
         prefix = self.bot.config["prefix"]
         embed = discord.Embed(
-            title="Help", description="List of available commands:", color=self.bot.color_main
+            title="Help",
+            description="List of available commands:",
+            color=self.bot.color_main,
         )
         for i in self.bot.cogs:
             cog = self.bot.get_cog(i.lower())
@@ -41,14 +43,14 @@ class General(commands.Cog, name="general"):
             color=self.bot.color_main,
         )
         embed.set_author(name="Bot Information")
-        embed.add_field(
-            name="Prefix:", value="/ (Slash Commands) or +", inline=True
-        )
+        embed.add_field(name="Prefix:", value="/ (Slash Commands) or +", inline=True)
         embed.add_field(
             name="Written in:", value=f"Python {platform.python_version()}", inline=True
         )
         embed.add_field(
-            name="Running on:", value=f"{platform.system()} {platform.release()} ({os.name})", inline=True
+            name="Running on:",
+            value=f"{platform.system()} {platform.release()} ({os.name})",
+            inline=True,
         )
         embed.set_footer(text=f"Requested by {context.author}")
         await context.send(embed=embed)
@@ -63,8 +65,12 @@ class General(commands.Cog, name="general"):
             color=self.bot.color_main,
         )
         embed.set_author(name="Dev")
-        embed.set_image(url="https://github.com/shiueo/shiueo/raw/main/pfp/shiueo_wallpaper_v4.png")
-        embed.add_field(name="Head", value="[shiueo](https://www.youtube.com/@shiueo)", inline=True)
+        embed.set_image(
+            url="https://github.com/shiueo/shiueo/raw/main/pfp/shiueo_wallpaper_v4.png"
+        )
+        embed.add_field(
+            name="Head", value="[shiueo](https://www.youtube.com/@shiueo)", inline=True
+        )
         embed.add_field(name="Contributors", value="", inline=True)
         embed.set_footer(text=f"Requested by {context.author}")
         await context.send(embed=embed)
