@@ -44,6 +44,7 @@ bot.visualize_security_block = config["visualize_security_block"]
 bot.visualize_traffic_block = config["visualize_traffic_block"]
 bot.visualize_hospital_block = config["visualize_hospital_block"]
 bot.visualize_leisure_block = config["visualize_leisure_block"]
+bot.corp_establish_minimum_currency = config["corp_establish_minimum_currency"]
 
 for state in bot.states:
     exec(f"bot.{state}_initial_money = config['{state}_initial_money']")

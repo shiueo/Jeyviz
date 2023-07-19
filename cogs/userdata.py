@@ -191,7 +191,7 @@ class Userdata(commands.Cog, name="userdata"):
         else:
             embed = discord.Embed(
                 title="SID가 존재하지 않습니다.",
-                description="SID 요청을 위해서는 ``sid_요청`` 명령어를 사용해주세요.",
+                description="SID 요청을 위해서는 ``sid 신청`` 명령어를 사용해주세요.",
                 color=self.bot.color_cancel,
             )
             await context.send(embed=embed)
