@@ -17,7 +17,7 @@ class YesOrNo(discord.ui.View):
 
     @discord.ui.button(label="네", style=discord.ButtonStyle.blurple)
     async def confirm(
-        self, button: discord.ui.Button, interaction: discord.Interaction
+            self, button: discord.ui.Button, interaction: discord.Interaction
     ):
         self.value = True
         self.stop()
@@ -65,8 +65,8 @@ class ForDev(commands.Cog, name="for_dev"):
                 if os.path.isfile(f"{self.bot.abs_path}/database/users/{user.id}.json"):
                     target_del_house = []
                     with open(
-                        f"{self.bot.abs_path}/database/users/{context.author.id}.json",
-                        "r",
+                            f"{self.bot.abs_path}/database/users/{context.author.id}.json",
+                            "r",
                     ) as f:
                         data = json.load(f)
                         if data["primary_house"]:
@@ -78,14 +78,14 @@ class ForDev(commands.Cog, name="for_dev"):
                     if target_del_house:
                         for i in target_del_house:
                             with open(
-                                f"{self.bot.abs_path}/database/states/{i[0]}.json", "r"
+                                    f"{self.bot.abs_path}/database/states/{i[0]}.json", "r"
                             ) as f:
                                 data2 = json.load(f)
                                 if [i[1], i[2]] in data2["residential"]:
                                     data2["residential"].remove([i[1], i[2]])
 
                             with open(
-                                f"{self.bot.abs_path}/database/states/{i[0]}.json", "w"
+                                    f"{self.bot.abs_path}/database/states/{i[0]}.json", "w"
                             ) as f:
                                 json.dump(data2, f)
 
@@ -143,7 +143,7 @@ class ForDev(commands.Cog, name="for_dev"):
                         "leisure": [],
                     }
                     with open(
-                        f"{self.bot.abs_path}/database/states/{state}.json", "w"
+                            f"{self.bot.abs_path}/database/states/{state}.json", "w"
                     ) as f:
                         json.dump(data, f)
                     self.bot.logger.info(f"{state} 초기화 완료.")
@@ -176,7 +176,7 @@ class ForDev(commands.Cog, name="for_dev"):
 
     @dev.command(name="add_money_to", description=f"해당 유저의 SID에 주어진 수만큼 화폐를 추가합니다.")
     async def dev_sid_add_money_to(
-        self, context: Context, user: discord.User, money: int
+            self, context: Context, user: discord.User, money: int
     ):
         if str(context.author.id) in self.bot.owners:
             member = context.guild.get_member(
@@ -192,16 +192,16 @@ class ForDev(commands.Cog, name="for_dev"):
             await choice.wait()
             if choice.value:
                 if os.path.isfile(
-                    f"{self.bot.abs_path}/database/users/{member.id}.json"
+                        f"{self.bot.abs_path}/database/users/{member.id}.json"
                 ):
                     with open(
-                        f"{self.bot.abs_path}/database/users/{member.id}.json", "r"
+                            f"{self.bot.abs_path}/database/users/{member.id}.json", "r"
                     ) as f:
                         data = json.load(f)
                         data["money"] += money
 
                     with open(
-                        f"{self.bot.abs_path}/database/users/{member.id}.json", "w"
+                            f"{self.bot.abs_path}/database/users/{member.id}.json", "w"
                     ) as f:
                         json.dump(data, f)
 
@@ -240,31 +240,29 @@ class ForDev(commands.Cog, name="for_dev"):
             all_occupied_spaces = 0
             for state in self.bot.states:
                 with open(
-                    f"{self.bot.abs_path}/database/states/{state}.json", "r"
+                        f"{self.bot.abs_path}/database/states/{state}.json", "r"
                 ) as f:
                     data = json.load(f)
                     all_spaces += (data["grid_x"] + 1) * (data["grid_y"] + 1)
                     all_occupied_spaces += (
-                        len(data["residential"])
-                        + len(data["corporate"])
-                        + len(data["industrial"])
-                        + len(data["natural"])
-                        + len(data["traffic"])
-                        + len(
-                            data["security"]
-                            + len(data["hospital"] + len(data["leisure"]))
-                        )
+                            len(data["residential"])
+                            + len(data["corporate"])
+                            + len(data["industrial"])
+                            + len(data["natural"])
+                            + len(data["traffic"])
+                            + len(data["security"])
+                            + len(data["hospital"]) +
+                            len(data["leisure"])
                     )
 
             all_user_money = 0
             all_user_num = 0
-            for user_file in os.listdir("database/users"):
+            for user_file in os.listdir(f"{self.bot.abs_path}/database/users"):
                 if user_file.endswith(".json"):
-                    with open(f"./database/users/{user_file}", "r") as file:
+                    with open(f"{self.bot.abs_path}/database/users/{user_file}", "r") as file:
                         data = json.load(file)
                         all_user_money += data["money"]
                         all_user_num += 1
-
             embed.add_field(
                 name="Spaces", value=f"{all_occupied_spaces}/{all_spaces}", inline=True
             )
