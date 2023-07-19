@@ -67,17 +67,18 @@ class ForDev(commands.Cog, name="for_dev"):
                         if data['primary_house']:
                             target_del_house.append(data['primary_house'])
                         if data['owned_house']:
-                            target_del_house.append(data['owned_house'])
-
+                            for i in data['owned_house']:
+                                target_del_house.append(i)
+                                
                     if target_del_house:
-                        state = target_del_house[0][0]
                         for i in target_del_house:
                             with open(f"{self.bot.abs_path}/database/states/{i[0]}.json", 'r') as f:
                                 data2 = json.load(f)
-                                data2['residential'].remove([i[1], i[2]])
+                                if [i[1], i[2]] in data2['residential']:
+                                    data2['residential'].remove([i[1], i[2]])
 
-                        with open(f"{self.bot.abs_path}/database/states/{state}.json", 'w') as f:
-                            json.dump(data2, f)
+                            with open(f"{self.bot.abs_path}/database/states/{i[0]}.json", 'w') as f:
+                                json.dump(data2, f)
 
                     os.remove(f"{self.bot.abs_path}/database/users/{user.id}.json")
                     embed = discord.Embed(

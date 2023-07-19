@@ -9,3 +9,9 @@ for i in range(6000):
     strwff += f"[{a},{b}],"
 
 print(strwff)
+
+
+
+
+k=[3,4,2,5]
+k.remove(7)
