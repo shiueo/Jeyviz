@@ -184,7 +184,7 @@ class ForDev(commands.Cog, name="for_dev"):
             ) or await context.guild.fetch_member(user.id)
             embed = discord.Embed(
                 title="금액 충전",
-                description=f"{member}의 SID에 {money}{self.bot.money_unit}를 추가합니다.",
+                description=f"{member}의 SID에 {money} {self.bot.money_unit}를 추가합니다.",
                 color=self.bot.color_main,
             )
             choice = YesOrNo(context.author)
@@ -207,7 +207,7 @@ class ForDev(commands.Cog, name="for_dev"):
 
                     embed = discord.Embed(
                         title="성공",
-                        description=f"성공적으로 {money}{self.bot.money_unit}를 {member}의 SID에 추가하였습니다.",
+                        description=f"성공적으로 {money} {self.bot.money_unit}를 {member}의 SID에 추가하였습니다.",
                         color=self.bot.color_success,
                     )
                     await message.edit(embed=embed, view=None, content=None)
