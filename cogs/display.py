@@ -27,7 +27,7 @@ class StatesInfoOptions(discord.ui.Select):
                 label="Ghranten", description="something"
             ),
             discord.SelectOption(
-                label="Khachlen", description="something"
+                label="Khachlen", description="Khachlen은 Natzhashite 최대의 항구도시입니다."
             ),
             discord.SelectOption(
                 label="Novorsk", description="something"
@@ -116,7 +116,7 @@ class StatesVisualizeOptions(discord.ui.Select):
                 label="Ghranten", description="something"
             ),
             discord.SelectOption(
-                label="Khachlen", description="something"
+                label="Khachlen", description="Khachlen은 Natzhashite 최대의 항구도시입니다."
             ),
             discord.SelectOption(
                 label="Novorsk", description="something"
@@ -189,7 +189,7 @@ class StatesVisualizeOptions(discord.ui.Select):
             embed.set_image(url=f'attachment://{user_choice}_viz.png')
 
             await interaction.response.edit_message(
-                content=f"{user_choice} 주의 시각화 자료를 생성중입니다.", view=None
+                content=f"요청하신 {user_choice} 주의 시각화 자료입니다.", view=None
             )
             await self.context.send(embed=embed, file=file)
 
