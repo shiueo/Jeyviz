@@ -162,6 +162,16 @@ class StatesVisualizeOptions(discord.ui.Select):
 
             for i in data['residential']:
                 px_image[i[0], i[1]] = tuple(int(self.bot.visualize_residential_block[i:i + 2], 16) for i in (0, 2, 4))
+            for i in data['corporate']:
+                px_image[i[0], i[1]] = tuple(int(self.bot.visualize_corporate_block[i:i + 2], 16) for i in (0, 2, 4))
+            for i in data['industrial']:
+                px_image[i[0], i[1]] = tuple(int(self.bot.visualize_industrial_block[i:i + 2], 16) for i in (0, 2, 4))
+            for i in data['natural']:
+                px_image[i[0], i[1]] = tuple(int(self.bot.visualize_natural_block[i:i + 2], 16) for i in (0, 2, 4))
+            for i in data['traffic']:
+                px_image[i[0], i[1]] = tuple(int(self.bot.visualize_traffic_block[i:i + 2], 16) for i in (0, 2, 4))
+            for i in data['security']:
+                px_image[i[0], i[1]] = tuple(int(self.bot.visualize_security_block[i:i + 2], 16) for i in (0, 2, 4))
 
             file_name = f"{self.bot.abs_path}/database/visualize/{user_choice}_viz.png"
             image = image.resize((1000, 1000), Image.Resampling.NEAREST)
@@ -170,11 +180,16 @@ class StatesVisualizeOptions(discord.ui.Select):
             file = discord.File(file_name)
             embed = discord.Embed(title=f"{user_choice} Visualization", description=None, color=self.bot.color_main)
             embed.add_field(name="공터", value="⬛", inline=True)
-            embed.add_field(name="주거지역", value="🟧", inline=True)
+            embed.add_field(name="교통", value="🟪", inline=True)
+            embed.add_field(name="주거", value="🟧", inline=True)
+            embed.add_field(name="산업", value="🟫", inline=True)
+            embed.add_field(name="기업", value="🟦", inline=True)
+            embed.add_field(name="자연", value="🟩", inline=True)
+            embed.add_field(name="치안", value="🟥", inline=True)
             embed.set_image(url=f'attachment://{user_choice}_viz.png')
 
             await interaction.response.edit_message(
-                content=f"{user_choice} 주의 시각화 자료입니다.", view=None
+                content=f"{user_choice} 주의 시각화 자료를 생성중입니다.", view=None
             )
             await self.context.send(embed=embed, file=file)
 
