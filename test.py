@@ -1,36 +1,41 @@
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
+from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
-def plot_colored_polygon(vertices_list, colors, region_names):
-    """
-    서로 다른 색으로 다각형 부분을 칠하는 함수
-    :param vertices_list: (list) 각 부분을 이루는 꼭지점들의 좌표를 순서대로 담은 리스트들의 리스트
-                          예: [[(x1, y1), (x2, y2), ..., (xn, yn)], ...]
-    :param colors: (list) 각 부분에 대응하는 색상을 담은 리스트
-                   예: ['red', 'green', 'blue', ...]
-    """
-    fig, ax = plt.subplots()  # Change the background color to light gray
+# 3D 그래프 생성
+fig = plt.figure()
+ax = fig.add_subplot(111, projection='3d')
 
-    for vertices, color, region_name in zip(vertices_list, colors, region_names):
-        x, y = zip(*vertices)
-        centroid_x = sum(x) / len(x)
-        centroid_y = sum(y) / len(y)
+# 예시 vertices_list
+vertices_list = [
+    # Quadrian
+    [(-36.07616, 46.49394, 0), (-36.07616, 49.83463, 0), (-33.96039, 54.06616, 0), (-31.06513, 52.84124, 0),
+     (-26.55521, 53.28666, 0), (-20.25948, 38.74361, 0)],
 
-        poly = patches.Polygon(list(zip(x, y)), facecolor=color, edgecolor="white")
-        ax.add_patch(poly)
+    # Quonan
+    [(5, 50, 0), (7, 53, 0), (8, 58, 0), (6, 60, 0), (4, 59, 0), (3, 54, 0)]
+]
 
-        plt.text(centroid_x, centroid_y, region_name, ha='center', va='center', fontweight='regular', color='#FFFFFF')
+# 3D 도형을 그리기 위한 코드
+polygons = [Poly3DCollection([vertices_list[0]], facecolors='cyan', edgecolors='blue', alpha=0.5),
+            Poly3DCollection([vertices_list[1]], facecolors='lightgreen', edgecolors='green', alpha=0.5)]
 
-    ax.autoscale()
-    ax.set_aspect('equal')
-    plt.xlabel('X')
-    plt.ylabel('Y')
-    plt.title('Natzhashite Union')
-    plt.grid(False)
-    plt.show()
+# 그래프에 도형 추가
+for poly in polygons:
+    ax.add_collection3d(poly)
 
-# Example usage
-vertices_list = [[(1, 1), (2, 5), (7, 3)], [(3, 3), (6, 7), (8, 5), (5, 2)]]
-colors = ['red', 'green']
-region_names = ['Polygon 1', 'Polygon 2']
-plot_colored_polygon(vertices_list, colors, region_names)
+# 라벨 설정
+ax.set_xlabel('X Label')
+ax.set_ylabel('Y Label')
+ax.set_zlabel('Z Label')
+
+# 축 범위 설정
+ax.set_xlim([-40, 10])
+ax.set_ylim([35, 65])
+ax.set_zlim([-5, 5])
+
+# 그리드 표시
+ax.grid()
+
+# 그래프 보여주기
+plt.tight_layout()
+plt.show()
