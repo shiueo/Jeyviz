@@ -22,6 +22,7 @@ def reset_system(path, config):
     for region in config['regions']:
         region_pos = eval(f"config['{region}_pos']")
         region_parent = eval(f"config['{region}_parent']")
+        region_color = eval(f"config['{region}_color']")
         region_init_residential = eval(f"config['{region}_init_residential']")
         region_init_corporate = eval(f"config['{region}_init_corporate']")
         region_init_industrial = eval(f"config['{region}_init_industrial']")
@@ -34,6 +35,7 @@ def reset_system(path, config):
         data = {
             'parent': region_parent,
             'pos': region_pos,
+            'color': region_color,
             'residential': region_init_residential,
             'corporate': region_init_corporate,
             'industrial': region_init_industrial,
