@@ -2,6 +2,7 @@ import json
 import os
 import platform
 import discord
+import numpy as np
 
 from PIL import Image
 from discord.ext import commands
@@ -50,15 +51,111 @@ class StatesInfoOptions(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
         user_choice = self.values[0]
-
-        draw_regions(user_choice, self.bot.abs_path, self.bot.config, self.bot.config[f'{user_choice}_regions'])
+        choice = self.bot.config[f'{user_choice}_regions']
+        draw_regions(user_choice, self.bot.abs_path, self.bot.config, choice)
 
         file = discord.File(f"{self.bot.abs_path}/database/viz/{user_choice}.png")
 
         await interaction.response.edit_message(
-            content=f"요청하신 {user_choice} 주의 시각화 자료입니다.", view=None
+            content=f"요청하신 {user_choice} 주에 대한 상세정보입니다.", view=None
         )
-        await self.context.send(file=file)
+        embed = discord.Embed(
+            title=f"{user_choice} 주", description="", color=self.bot.color_main
+        )
+
+        RESIDENTIAL = []
+        CORPORATE = []
+        INDUSTRIAL = []
+        NATURAL = []
+        TRAFFIC = []
+        SECURITY = []
+        HOSPITAL = []
+        LEISURE = []
+        T_RESIDENTIAL = []
+        T_CORPORATE = []
+        T_INDUSTRIAL = []
+        T_NATURAL = []
+        T_TRAFFIC = []
+        T_SECURITY = []
+        T_HOSPITAL = []
+        T_LEISURE = []
+        for region in choice:
+            with open(f"{self.bot.abs_path}/database/regions/{region}.json", 'r') as f:
+                data = json.load(f)
+                T_RESIDENTIAL.append(data['residential'])
+                T_CORPORATE.append(data['corporate'])
+                T_INDUSTRIAL.append(data['industrial'])
+                T_NATURAL.append(data['natural'])
+                T_TRAFFIC.append(data['traffic'])
+                T_SECURITY.append(data['security'])
+                T_HOSPITAL.append(data['hospital'])
+                T_LEISURE.append(data['leisure'])
+
+        other_regions = [x for x in self.bot.config['regions'] if x not in choice]
+
+        for region in other_regions:
+            with open(f"{self.bot.abs_path}/database/regions/{region}.json", 'r') as f:
+                data = json.load(f)
+                RESIDENTIAL.append(data['residential'])
+                CORPORATE.append(data['corporate'])
+                INDUSTRIAL.append(data['industrial'])
+                NATURAL.append(data['natural'])
+                TRAFFIC.append(data['traffic'])
+                SECURITY.append(data['security'])
+                HOSPITAL.append(data['hospital'])
+                LEISURE.append(data['leisure'])
+
+        RESIDENTIAL += T_RESIDENTIAL
+        CORPORATE += T_CORPORATE
+        INDUSTRIAL += T_INDUSTRIAL
+        NATURAL += T_NATURAL
+        TRAFFIC += T_TRAFFIC
+        SECURITY += T_SECURITY
+        HOSPITAL += T_HOSPITAL
+        LEISURE += T_LEISURE
+
+        float_max_len = 2
+        embed.add_field(
+            name="주거 (SRM)",
+            value=f"{np.mean(T_RESIDENTIAL)} / {np.round(np.mean(RESIDENTIAL), float_max_len)} (전체 평균)",
+            inline=True,
+        )
+        embed.add_field(
+            name="기업 (SCM)",
+            value=f"{np.mean(T_CORPORATE)} / {np.round(np.mean(CORPORATE), float_max_len)} (전체 평균)",
+            inline=True,
+        )
+        embed.add_field(
+            name="산업 (SIM)",
+            value=f"{np.mean(T_INDUSTRIAL)} / {np.round(np.mean(INDUSTRIAL), float_max_len)} (전체 평균)",
+            inline=True,
+        )
+        embed.add_field(
+            name="자연 (SNM)",
+            value=f"{np.mean(T_CORPORATE)} / {np.round(np.mean(NATURAL), float_max_len)} (전체 평균)",
+            inline=True,
+        )
+        embed.add_field(
+            name="교통 (STM)",
+            value=f"{np.mean(T_TRAFFIC)} / {np.round(np.mean(TRAFFIC), float_max_len)} (전체 평균)",
+            inline=True,
+        )
+        embed.add_field(
+            name="치안 (SSM)",
+            value=f"{np.mean(T_SECURITY)} / {np.round(np.mean(SECURITY), float_max_len)} (전체 평균)",
+            inline=True,
+        )
+        embed.add_field(
+            name="병원 (SHM)",
+            value=f"{np.mean(T_HOSPITAL)} / {np.round(np.mean(HOSPITAL), float_max_len)} (전체 평균)",
+            inline=True,
+        )
+        embed.add_field(
+            name="여기 (SLM)",
+            value=f"{np.mean(T_LEISURE)} / {np.round(np.mean(LEISURE), float_max_len)} (전체 평균)",
+            inline=True,
+        )
+        await self.context.send(embed=embed, file=file)
 
 
 class StateInfoOptionsView(discord.ui.View):
