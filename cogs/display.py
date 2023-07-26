@@ -1,16 +1,14 @@
 import json
 import os
-import platform
 import discord
 import numpy as np
 
-from PIL import Image
 from discord.ext import commands
 from discord.ext.commands import Context
 
 from essentials.draw_regions import draw_regions
 from essentials.json_util import json_open
-from utils.utils_numunit import number_formatter
+from essentials.utils_numunit import number_formatter
 
 
 class StatesInfoOptions(discord.ui.Select):
