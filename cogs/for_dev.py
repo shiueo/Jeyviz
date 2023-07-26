@@ -8,6 +8,8 @@ from discord.ext.commands import Context
 
 from utils.utils_numunit import number_formatter
 
+from essentials.reset_system import reset_system
+
 
 class YesOrNo(discord.ui.View):
     def __init__(self, author):
@@ -277,6 +279,21 @@ class ForDev(commands.Cog, name="for_dev"):
                 inline=True,
             )
 
+            await context.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                title="오류.", description="당신은 DEV계열이 아닙니다.", color=self.bot.color_cancel
+            )
+            await context.send(embed=embed)
+
+    @dev.command(name="reset_everything", description="Natzhashite 전체를 초기 상황으로 되돌립니다.")
+    async def dev_reset_everything(self, context: Context):
+        if str(context.author.id) in self.bot.owners:
+            log_msg = reset_system(self.bot.abs_path, self.bot.config)
+            embed = discord.Embed(
+                title="Reset Everything", description=None, color=self.bot.color_main
+            )
+            embed.add_field(name='LOG', value=log_msg, inline=True)
             await context.send(embed=embed)
         else:
             embed = discord.Embed(

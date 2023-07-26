@@ -33,21 +33,8 @@ bot.color_success = int(config["color_success"], 16)
 bot.color_cancel = int(config["color_cancel"], 16)
 bot.dev_banner_url = config["dev_banner_url"]
 bot.owners = config["owners"]
-bot.states = config["states"]
 bot.money_unit = config["money_unit"]
-bot.visualize_residential_block = config["visualize_residential_block"]
-bot.visualize_nothing_block = config["visualize_nothing_block"]
-bot.visualize_corporate_block = config["visualize_corporate_block"]
-bot.visualize_industrial_block = config["visualize_industrial_block"]
-bot.visualize_natural_block = config["visualize_natural_block"]
-bot.visualize_security_block = config["visualize_security_block"]
-bot.visualize_traffic_block = config["visualize_traffic_block"]
-bot.visualize_hospital_block = config["visualize_hospital_block"]
-bot.visualize_leisure_block = config["visualize_leisure_block"]
-bot.corp_establish_minimum_currency = config["corp_establish_minimum_currency"]
 
-for state in bot.states:
-    exec(f"bot.{state}_initial_money = config['{state}_initial_money']")
 
 logger = logging.getLogger("Jeyviz_bot")
 logger.setLevel(logging.INFO)
