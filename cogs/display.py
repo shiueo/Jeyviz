@@ -152,7 +152,7 @@ class StatesInfoOptions(discord.ui.Select):
             inline=True,
         )
         embed.add_field(
-            name="여기 (SLM)",
+            name="여가 (SLM)",
             value=f"{np.mean(T_LEISURE)} / {np.round(np.mean(LEISURE), float_max_len)} (전체 평균)",
             inline=True,
         )

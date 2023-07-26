@@ -11,7 +11,7 @@ def create_user(path, config, logger, author_id, author_name):
     json_path = f"{path}/database/users/{author_id}.json"
 
     chosen_region = "Scholp"
-    chosen_house_type = random.choice(config['residential_types'])
+    chosen_house_type = "별장"
 
     if not os.path.isdir(f"{path}/database/residential/{author_id}"):
         os.mkdir(f"{path}/database/residential/{author_id}")

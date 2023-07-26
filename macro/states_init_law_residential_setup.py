@@ -9,5 +9,7 @@ for state in states:
     jsonstring += f'"__{state}_law_residential_min__":"-----------------------------------------------------------------------------------------------------",\n'
     for residential_type in residential_types:
         jsonstring += f'"{state}_{residential_type}_min": 0,\n'
+        jsonstring += f'"{state}_{residential_type}_residential_score": 0,\n'
+        jsonstring += f'"{state}_{residential_type}_residential_weight": 0,\n'
     jsonstring += f'"{state}_residential_weight": 0,\n'
 print(jsonstring)
