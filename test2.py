@@ -17,6 +17,7 @@ def plot_colored_polygon(vertices_list, colors):
     plt.title('Natzhashite Union')
     plt.grid(False)
     plt.savefig('map.png')
+    plt.show()
 
 
 # 다각형의 꼭지점들을 정의합니다.

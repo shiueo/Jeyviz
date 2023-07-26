@@ -11,10 +11,13 @@ def reset_system(path, config):
         shutil.rmtree(f"{path}/database/states")
     if os.path.isdir(f"{path}/database/users"):
         shutil.rmtree(f"{path}/database/users")
+        if os.path.isdir(f"{path}/database/viz"):
+            shutil.rmtree(f"{path}/database/viz")
 
     os.mkdir(f"{path}/database/regions")
     os.mkdir(f"{path}/database/states")
     os.mkdir(f"{path}/database/users")
+    os.mkdir(f"{path}/database/viz")
 
     for region in config['regions']:
         region_pos = eval(f"config['{region}_pos']")
