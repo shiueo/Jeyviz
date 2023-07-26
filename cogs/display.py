@@ -51,7 +51,7 @@ class StatesInfoOptions(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
         user_choice = self.values[0]
-        choice = self.bot.config[f'{user_choice}_regions']
+        choice = self.bot.config[f"{user_choice}_regions"]
         draw_regions(user_choice, self.bot.abs_path, self.bot.config, choice)
 
         file = discord.File(f"{self.bot.abs_path}/database/viz/{user_choice}.png")
@@ -80,30 +80,30 @@ class StatesInfoOptions(discord.ui.Select):
         T_HOSPITAL = []
         T_LEISURE = []
         for region in choice:
-            with open(f"{self.bot.abs_path}/database/regions/{region}.json", 'r') as f:
+            with open(f"{self.bot.abs_path}/database/regions/{region}.json", "r") as f:
                 data = json.load(f)
-                T_RESIDENTIAL.append(data['residential'])
-                T_CORPORATE.append(data['corporate'])
-                T_INDUSTRIAL.append(data['industrial'])
-                T_NATURAL.append(data['natural'])
-                T_TRAFFIC.append(data['traffic'])
-                T_SECURITY.append(data['security'])
-                T_HOSPITAL.append(data['hospital'])
-                T_LEISURE.append(data['leisure'])
+                T_RESIDENTIAL.append(data["residential"])
+                T_CORPORATE.append(data["corporate"])
+                T_INDUSTRIAL.append(data["industrial"])
+                T_NATURAL.append(data["natural"])
+                T_TRAFFIC.append(data["traffic"])
+                T_SECURITY.append(data["security"])
+                T_HOSPITAL.append(data["hospital"])
+                T_LEISURE.append(data["leisure"])
 
-        other_regions = [x for x in self.bot.config['regions'] if x not in choice]
+        other_regions = [x for x in self.bot.config["regions"] if x not in choice]
 
         for region in other_regions:
-            with open(f"{self.bot.abs_path}/database/regions/{region}.json", 'r') as f:
+            with open(f"{self.bot.abs_path}/database/regions/{region}.json", "r") as f:
                 data = json.load(f)
-                RESIDENTIAL.append(data['residential'])
-                CORPORATE.append(data['corporate'])
-                INDUSTRIAL.append(data['industrial'])
-                NATURAL.append(data['natural'])
-                TRAFFIC.append(data['traffic'])
-                SECURITY.append(data['security'])
-                HOSPITAL.append(data['hospital'])
-                LEISURE.append(data['leisure'])
+                RESIDENTIAL.append(data["residential"])
+                CORPORATE.append(data["corporate"])
+                INDUSTRIAL.append(data["industrial"])
+                NATURAL.append(data["natural"])
+                TRAFFIC.append(data["traffic"])
+                SECURITY.append(data["security"])
+                HOSPITAL.append(data["hospital"])
+                LEISURE.append(data["leisure"])
 
         RESIDENTIAL += T_RESIDENTIAL
         CORPORATE += T_CORPORATE
@@ -190,10 +190,10 @@ class Display(commands.Cog, name="display"):
     )
     async def view_sid(self, context: Context):
         if os.path.isfile(
-                f"{self.bot.abs_path}/database/users/{context.author.id}.json"
+            f"{self.bot.abs_path}/database/users/{context.author.id}.json"
         ):
             with open(
-                    f"{self.bot.abs_path}/database/users/{context.author.id}.json", "r"
+                f"{self.bot.abs_path}/database/users/{context.author.id}.json", "r"
             ) as f:
                 data = json.load(f)
                 embed = discord.Embed(
@@ -249,7 +249,7 @@ class Display(commands.Cog, name="display"):
     )
     async def view_state_info(self, context: Context):
         if os.path.isfile(
-                f"{self.bot.abs_path}/database/users/{context.author.id}.json"
+            f"{self.bot.abs_path}/database/users/{context.author.id}.json"
         ):
             view = StateInfoOptionsView(self.bot, context.author, context)
             await context.send("조회할 주를 선택해주세요.", view=view)

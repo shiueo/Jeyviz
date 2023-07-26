@@ -293,7 +293,7 @@ class ForDev(commands.Cog, name="for_dev"):
             embed = discord.Embed(
                 title="Reset Everything", description=None, color=self.bot.color_main
             )
-            embed.add_field(name='LOG', value=log_msg, inline=True)
+            embed.add_field(name="LOG", value=log_msg, inline=True)
             await context.send(embed=embed)
         else:
             embed = discord.Embed(

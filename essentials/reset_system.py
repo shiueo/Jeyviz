@@ -19,7 +19,7 @@ def reset_system(path, config):
     os.mkdir(f"{path}/database/users")
     os.mkdir(f"{path}/database/viz")
 
-    for region in config['regions']:
+    for region in config["regions"]:
         region_pos = eval(f"config['{region}_pos']")
         region_parent = eval(f"config['{region}_parent']")
         region_color = eval(f"config['{region}_color']")
@@ -33,19 +33,19 @@ def reset_system(path, config):
         region_init_leisure = eval(f"config['{region}_init_leisure']")
 
         data = {
-            'parent': region_parent,
-            'pos': region_pos,
-            'color': region_color,
-            'residential': region_init_residential,
-            'corporate': region_init_corporate,
-            'industrial': region_init_industrial,
-            'natural': region_init_natural,
-            'traffic': region_init_traffic,
-            'security': region_init_security,
-            'hospital': region_init_hospital,
-            'leisure': region_init_leisure
+            "parent": region_parent,
+            "pos": region_pos,
+            "color": region_color,
+            "residential": region_init_residential,
+            "corporate": region_init_corporate,
+            "industrial": region_init_industrial,
+            "natural": region_init_natural,
+            "traffic": region_init_traffic,
+            "security": region_init_security,
+            "hospital": region_init_hospital,
+            "leisure": region_init_leisure,
         }
-        with open(f"{path}/database/regions/{region}.json", 'w') as f:
+        with open(f"{path}/database/regions/{region}.json", "w") as f:
             json.dump(data, f)
 
     return f"{len(config['regions'])}개의 지역 초기화 완료. / User 초기화 완료. / State 초기화 완료."
