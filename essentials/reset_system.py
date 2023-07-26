@@ -5,19 +5,14 @@ import shutil
 
 def reset_system(path, config):
     log_message = []
-    if os.path.isdir(f"{path}/database/regions"):
-        shutil.rmtree(f"{path}/database/regions")
-    if os.path.isdir(f"{path}/database/states"):
-        shutil.rmtree(f"{path}/database/states")
-    if os.path.isdir(f"{path}/database/users"):
-        shutil.rmtree(f"{path}/database/users")
-        if os.path.isdir(f"{path}/database/viz"):
-            shutil.rmtree(f"{path}/database/viz")
+    shutil.rmtree(f"{path}/database")
 
+    os.mkdir(f"{path}/database")
     os.mkdir(f"{path}/database/regions")
     os.mkdir(f"{path}/database/states")
     os.mkdir(f"{path}/database/users")
     os.mkdir(f"{path}/database/viz")
+    os.mkdir(f"{path}/database/residential")
 
     for region in config["regions"]:
         region_pos = eval(f"config['{region}_pos']")
@@ -45,7 +40,30 @@ def reset_system(path, config):
             "hospital": region_init_hospital,
             "leisure": region_init_leisure,
         }
-        with open(f"{path}/database/regions/{region}.json", "w") as f:
-            json.dump(data, f)
+        with open(f"{path}/database/regions/{region}.json", "w", encoding='utf8') as f:
+            json.dump(data, f, indent="\t", ensure_ascii=False)
+
+    for state in config["states"]:
+        state_init_detachedhouse_min = eval(f"config['{state}_단독주택_min']")
+        state_init_townhouse_min = eval(f"config['{state}_연립주택_min']")
+        state_init_apartment_min = eval(f"config['{state}_아파트_min']")
+        state_init_cottage_min = eval(f"config['{state}_별장_min']")
+        state_init_terracehouse_min = eval(f"config['{state}_테라스하우스_min']")
+        state_init_oneroom_min = eval(f"config['{state}_원룸_min']")
+        state_init_basementhouse_min = eval(f"config['{state}_반지하_min']")
+        state_init_residential_weight = eval(f"config['{state}_residential_weight']")
+
+        data = {
+            "단독주택_min": state_init_detachedhouse_min,
+            "연립주택_min": state_init_townhouse_min,
+            "아파트_min": state_init_apartment_min,
+            "별장_min": state_init_cottage_min,
+            "테라스하우스_min": state_init_terracehouse_min,
+            "원룸_min": state_init_oneroom_min,
+            "반지하_min": state_init_basementhouse_min,
+            "residential_weight": state_init_residential_weight,
+        }
+        with open(f"{path}/database/states/{state}.json", "w", encoding='utf8') as f:
+            json.dump(data, f, indent="\t", ensure_ascii=False)
 
     return f"{len(config['regions'])}개의 지역 초기화 완료. / User 초기화 완료. / State 초기화 완료."

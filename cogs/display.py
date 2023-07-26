@@ -9,6 +9,7 @@ from discord.ext import commands
 from discord.ext.commands import Context
 
 from essentials.draw_regions import draw_regions
+from essentials.json_util import json_open
 from utils.utils_numunit import number_formatter
 
 
@@ -168,6 +169,59 @@ class StateInfoOptionsView(discord.ui.View):
         return interaction.user.id == self.author.id
 
 
+class HouseInfoOptions(discord.ui.Select):
+    def __init__(self, bot, context):
+        self.bot = bot
+        self.context = context
+        options = []
+        houses = [file for file in os.listdir(f"{self.bot.abs_path}/database/residential/{self.context.author.id}") if file.endswith('.json')]
+
+        for house in houses:
+            house_data = json_open(f"{self.bot.abs_path}/database/residential/{self.context.author.id}/{house}")
+            options.append(discord.SelectOption(label=house_data['name'], description=house_data['house_type']))
+        super().__init__(
+            placeholder="Choose...",
+            min_values=1,
+            max_values=1,
+            options=options,
+        )
+
+    async def callback(self, interaction: discord.Interaction):
+        user_choice = self.values[0]
+        house_data = json_open(f"{self.bot.abs_path}/database/residential/{self.context.author.id}/{user_choice}.json")
+        embed = discord.Embed(
+            title=f"주택: {user_choice}", description="", color=self.bot.color_main
+        )
+        embed.add_field(
+            name="주택 위치",
+            value=f"{house_data['region']}",
+            inline=True,
+        )
+        embed.add_field(
+            name="주택 종류",
+            value=f"{house_data['house_type']}",
+            inline=True,
+        )
+        embed.add_field(
+            name="주택 가격",
+            value=f"{house_data['cost']}",
+            inline=True,
+        )
+        await interaction.response.edit_message(
+            embed=embed, content=None, view=None
+        )
+
+
+class HouseInfoView(discord.ui.View):
+    def __init__(self, bot, author, context):
+        super().__init__()
+        self.author = author
+        self.add_item(HouseInfoOptions(bot, context))
+
+    async def interaction_check(self, interaction: discord.Interaction):
+        return interaction.user.id == self.author.id
+
+
 class Display(commands.Cog, name="display"):
     def __init__(self, bot):
         self.bot = bot
@@ -190,51 +244,50 @@ class Display(commands.Cog, name="display"):
     )
     async def view_sid(self, context: Context):
         if os.path.isfile(
-            f"{self.bot.abs_path}/database/users/{context.author.id}.json"
+                f"{self.bot.abs_path}/database/users/{context.author.id}.json"
         ):
-            with open(
-                f"{self.bot.abs_path}/database/users/{context.author.id}.json", "r"
-            ) as f:
-                data = json.load(f)
-                embed = discord.Embed(
-                    title=f"{data['name']}의 SID를 조회합니다.",
-                    color=self.bot.color_main,
-                )
-                embed.set_thumbnail(url=context.author.avatar.url)
-                embed.add_field(name="이름", value=data["name"])
-                embed.add_field(
-                    name="재산",
-                    value=f"{number_formatter(str(data['money']))} {self.bot.money_unit}",
-                    inline=True,
-                )
-                if data["primary_house"]:
-                    primary_house = data["primary_house"]
-                    embed.add_field(
-                        name="현 거주지",
-                        value=f"{primary_house[0]}-X{primary_house[1]}Y{primary_house[2]}",
-                    )
-                else:
-                    embed.add_field(name="현 거주지", value="None")
-                if data["owned_house"]:
-                    owned_house = ", ".join(data["owned_house"])
-                else:
-                    owned_house = "None"
-                embed.add_field(name="추가적 주택", value=owned_house)
-                if data["owned_company"]:
-                    owned_company = ", ".join(data["owned_company"])
-                else:
-                    owned_company = None
-                embed.add_field(name="소유한 회사", value=owned_company)
-                if data["employed_company"]:
-                    employed_company = ", ".join(data["employed_company"])
-                else:
-                    employed_company = "None"
-                embed.add_field(name="채용된 회사", value=employed_company)
+            user_data = json_open(f"{self.bot.abs_path}/database/users/{context.author.id}.json")
+            primary_house = user_data['primary_house']
+            residential_data = json_open(
+                f"{self.bot.abs_path}/database/residential/{context.author.id}/{primary_house}.json")
+            embed = discord.Embed(
+                title=f"{context.author.name}의 SID를 조회합니다.",
+                color=self.bot.color_main,
+            )
+            embed.set_thumbnail(url=context.author.avatar.url)
+            embed.add_field(
+                name="재산",
+                value=f"{number_formatter(str(user_data['money']))} {self.bot.money_unit}",
+                inline=True,
+            )
 
-                embed.add_field(name="행복도", value=data["happiness"])
+            embed.add_field(
+                name="현 거주지",
+                value=f"{residential_data['region']}-{residential_data['name']} ({residential_data['house_type']})",
+            )
 
-                embed.add_field(name="건강도", value=data["health"])
-                await context.send(embed=embed)
+            embed.add_field(name="행복도", value=user_data["happiness"])
+
+            embed.add_field(name="건강도", value=user_data["health"])
+            await context.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                title="SID가 존재하지 않습니다.",
+                description="SID 신청을 위해서는 ``sid 신청`` 명령어를 사용해주세요.",
+                color=self.bot.color_cancel,
+            )
+            await context.send(embed=embed)
+
+    @view.command(
+        name="집",
+        description="자신의 SID를 조회합니다.",
+    )
+    async def view_sid(self, context: Context):
+        if os.path.isfile(
+                f"{self.bot.abs_path}/database/users/{context.author.id}.json"
+        ):
+            view = HouseInfoView(self.bot, context.author, context)
+            await context.send("조회할 자신의 집을 선택해주세요.", view=view)
         else:
             embed = discord.Embed(
                 title="SID가 존재하지 않습니다.",
@@ -249,7 +302,7 @@ class Display(commands.Cog, name="display"):
     )
     async def view_state_info(self, context: Context):
         if os.path.isfile(
-            f"{self.bot.abs_path}/database/users/{context.author.id}.json"
+                f"{self.bot.abs_path}/database/users/{context.author.id}.json"
         ):
             view = StateInfoOptionsView(self.bot, context.author, context)
             await context.send("조회할 주를 선택해주세요.", view=view)

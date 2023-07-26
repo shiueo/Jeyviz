@@ -7,6 +7,8 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Context
 
+from essentials.user import create_user
+
 
 class YesOrNo(discord.ui.View):
     def __init__(self, author):
@@ -64,57 +66,7 @@ class Userdata(commands.Cog, name="userdata"):
             message = await context.send(embed=embed, view=choice)
             await choice.wait()
             if choice.value:
-                chosen_state = random.choice(self.bot.states)
-                with open(
-                    f"{self.bot.abs_path}/database/states/{chosen_state}.json", "r"
-                ) as f:
-                    state_data = json.load(f)
-                    initial_money = state_data["initial_support_money"]
-                    all_occupied_blocks = (
-                        state_data["residential"]
-                        + state_data["corporate"]
-                        + state_data["industrial"]
-                        + state_data["natural"]
-                        + state_data["traffic"]
-                        + state_data["security"]
-                    )
-                    if (
-                        len(all_occupied_blocks)
-                        == state_data["grid_x"] * state_data["grid_y"]
-                    ):
-                        state_data["grid_x"] += 1
-                        state_data["grid_y"] += 1
-                    while 1:
-                        new_house_x, new_house_y = random.randint(
-                            0, state_data["grid_x"]
-                        ), random.randint(0, state_data["grid_y"])
-                        if [new_house_x, new_house_y] not in all_occupied_blocks:
-                            state_data["residential"].append([new_house_x, new_house_y])
-                            break
-
-                with open(
-                    f"{self.bot.abs_path}/database/states/{chosen_state}.json", "w"
-                ) as f:
-                    json.dump(state_data, f)
-
-                self.bot.logger.info(
-                    f"New User {context.author.name} Joined! - {chosen_state}-X{new_house_x}Y{new_house_y}"
-                )
-                data = {
-                    "dev": 0,
-                    "name": context.author.name,
-                    "money": initial_money,
-                    "owned_company": [],
-                    "employed_company": [],
-                    "primary_house": [chosen_state, new_house_x, new_house_y],
-                    "owned_house": [],
-                    "happiness": random.randint(50, 100),
-                    "health": random.randint(50, 100),
-                }
-                with open(
-                    f"{self.bot.abs_path}/database/users/{context.author.id}.json", "w"
-                ) as f:
-                    json.dump(data, f)
+                create_user(self.bot.abs_path, self.bot.config, self.bot.logger, context.author.id, context.author.name)
                 embed = discord.Embed(
                     title="성공",
                     description="성공적으로 SID를 부여하였습니다!",
