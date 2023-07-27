@@ -116,42 +116,42 @@ class StatesInfoOptions(discord.ui.Select):
         float_max_len = 2
         embed.add_field(
             name="주거 (SRM)",
-            value=f"{np.mean(T_RESIDENTIAL)} / {np.round(np.mean(RESIDENTIAL), float_max_len)} (전체 평균)",
+            value=f"{np.round(np.mean(T_RESIDENTIAL),float_max_len)} / {np.round(np.mean(RESIDENTIAL), float_max_len)} (전체 평균)",
             inline=True,
         )
         embed.add_field(
             name="기업 (SCM)",
-            value=f"{np.mean(T_CORPORATE)} / {np.round(np.mean(CORPORATE), float_max_len)} (전체 평균)",
+            value=f"{np.round(np.mean(T_CORPORATE),float_max_len)} / {np.round(np.mean(CORPORATE), float_max_len)} (전체 평균)",
             inline=True,
         )
         embed.add_field(
             name="산업 (SIM)",
-            value=f"{np.mean(T_INDUSTRIAL)} / {np.round(np.mean(INDUSTRIAL), float_max_len)} (전체 평균)",
+            value=f"{np.round(np.mean(T_INDUSTRIAL),float_max_len)} / {np.round(np.mean(INDUSTRIAL), float_max_len)} (전체 평균)",
             inline=True,
         )
         embed.add_field(
             name="자연 (SNM)",
-            value=f"{np.mean(T_CORPORATE)} / {np.round(np.mean(NATURAL), float_max_len)} (전체 평균)",
+            value=f"{np.round(np.mean(T_NATURAL),float_max_len)} / {np.round(np.mean(NATURAL), float_max_len)} (전체 평균)",
             inline=True,
         )
         embed.add_field(
             name="교통 (STM)",
-            value=f"{np.mean(T_TRAFFIC)} / {np.round(np.mean(TRAFFIC), float_max_len)} (전체 평균)",
+            value=f"{np.round(np.mean(T_TRAFFIC),float_max_len)} / {np.round(np.mean(TRAFFIC), float_max_len)} (전체 평균)",
             inline=True,
         )
         embed.add_field(
             name="치안 (SSM)",
-            value=f"{np.mean(T_SECURITY)} / {np.round(np.mean(SECURITY), float_max_len)} (전체 평균)",
+            value=f"{np.round(np.mean(T_SECURITY),float_max_len)} / {np.round(np.mean(SECURITY), float_max_len)} (전체 평균)",
             inline=True,
         )
         embed.add_field(
             name="병원 (SHM)",
-            value=f"{np.mean(T_HOSPITAL)} / {np.round(np.mean(HOSPITAL), float_max_len)} (전체 평균)",
+            value=f"{np.round(np.mean(T_HOSPITAL),float_max_len)} / {np.round(np.mean(HOSPITAL), float_max_len)} (전체 평균)",
             inline=True,
         )
         embed.add_field(
             name="여가 (SLM)",
-            value=f"{np.mean(T_LEISURE)} / {np.round(np.mean(LEISURE), float_max_len)} (전체 평균)",
+            value=f"{np.round(np.mean(T_LEISURE),float_max_len)} / {np.round(np.mean(LEISURE), float_max_len)} (전체 평균)",
             inline=True,
         )
         await self.context.send(embed=embed, file=file)
