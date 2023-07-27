@@ -1,6 +1,17 @@
 states = [
-    "Schtarn", "Ashan", "Cronokz", "Novorsk", "Tetrin", "Zhalka", "Utenie", "Ghranten", "Khachlen", "Rocktz", "Realmz",
-    "Esteny", "Quadrian"
+    "Schtarn",
+    "Ashan",
+    "Cronokz",
+    "Novorsk",
+    "Tetrin",
+    "Zhalka",
+    "Utenie",
+    "Ghranten",
+    "Khachlen",
+    "Rocktz",
+    "Realmz",
+    "Esteny",
+    "Quadrian",
 ]
 residential_types = ["단독주택", "연립주택", "아파트", "별장", "테라스하우스", "원룸", "반지하"]
 

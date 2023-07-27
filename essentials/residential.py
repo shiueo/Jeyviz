@@ -8,7 +8,7 @@ def create_house(path, config, region, author_id, house_name, house_type):
 
     region_data = json_open(f"{path}/database/regions/{region}.json")
 
-    region_state = region_data['parent']
+    region_state = region_data["parent"]
     state_data = json_open(f"{path}/database/states/{region_state}.json")
 
     house_data = {
@@ -16,12 +16,28 @@ def create_house(path, config, region, author_id, house_name, house_type):
         "name": house_name,
         "region": region,
         "house_type": house_type,
-        "cost": int(state_data[f"{house_type}_min"] * (1 + ((abs(random.randint(state_data[f"residential_weight"]-30, state_data[f"residential_weight"]+30)))/5000)**1.08))
+        "cost": int(
+            state_data[f"{house_type}_min"]
+            * (
+                1
+                + (
+                    (
+                        abs(
+                            random.randint(
+                                state_data[f"residential_weight"] - 30,
+                                state_data[f"residential_weight"] + 30,
+                            )
+                        )
+                    )
+                    / 5000
+                )
+                ** 1.08
+            )
+        ),
     }
-    region_data['residential'] += state_data[f"{house_type}_residential_score"]
-    state_data['residential_weight'] += state_data[f"{house_type}_residential_weight"]
+    region_data["residential"] += state_data[f"{house_type}_residential_score"]
+    state_data["residential_weight"] += state_data[f"{house_type}_residential_weight"]
 
     json_dump(house_data, house_json_path)
     json_dump(region_data, f"{path}/database/regions/{region}.json")
     json_dump(state_data, f"{path}/database/states/{region_state}.json")
-

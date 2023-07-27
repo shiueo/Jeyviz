@@ -172,11 +172,23 @@ class HouseInfoOptions(discord.ui.Select):
         self.bot = bot
         self.context = context
         options = []
-        houses = [file for file in os.listdir(f"{self.bot.abs_path}/database/residential/{self.context.author.id}") if file.endswith('.json')]
+        houses = [
+            file
+            for file in os.listdir(
+                f"{self.bot.abs_path}/database/residential/{self.context.author.id}"
+            )
+            if file.endswith(".json")
+        ]
 
         for house in houses:
-            house_data = json_open(f"{self.bot.abs_path}/database/residential/{self.context.author.id}/{house}")
-            options.append(discord.SelectOption(label=house_data['name'], description=house_data['house_type']))
+            house_data = json_open(
+                f"{self.bot.abs_path}/database/residential/{self.context.author.id}/{house}"
+            )
+            options.append(
+                discord.SelectOption(
+                    label=house_data["name"], description=house_data["house_type"]
+                )
+            )
         super().__init__(
             placeholder="Choose...",
             min_values=1,
@@ -186,7 +198,9 @@ class HouseInfoOptions(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
         user_choice = self.values[0]
-        house_data = json_open(f"{self.bot.abs_path}/database/residential/{self.context.author.id}/{user_choice}.json")
+        house_data = json_open(
+            f"{self.bot.abs_path}/database/residential/{self.context.author.id}/{user_choice}.json"
+        )
         embed = discord.Embed(
             title=f"주택: {user_choice}", description="", color=self.bot.color_main
         )
@@ -205,9 +219,7 @@ class HouseInfoOptions(discord.ui.Select):
             value=f"{house_data['cost']}",
             inline=True,
         )
-        await interaction.response.edit_message(
-            embed=embed, content=None, view=None
-        )
+        await interaction.response.edit_message(embed=embed, content=None, view=None)
 
 
 class HouseInfoView(discord.ui.View):
@@ -242,12 +254,15 @@ class Display(commands.Cog, name="display"):
     )
     async def view_sid(self, context: Context):
         if os.path.isfile(
-                f"{self.bot.abs_path}/database/users/{context.author.id}.json"
+            f"{self.bot.abs_path}/database/users/{context.author.id}.json"
         ):
-            user_data = json_open(f"{self.bot.abs_path}/database/users/{context.author.id}.json")
-            primary_house = user_data['primary_house']
+            user_data = json_open(
+                f"{self.bot.abs_path}/database/users/{context.author.id}.json"
+            )
+            primary_house = user_data["primary_house"]
             residential_data = json_open(
-                f"{self.bot.abs_path}/database/residential/{context.author.id}/{primary_house}.json")
+                f"{self.bot.abs_path}/database/residential/{context.author.id}/{primary_house}.json"
+            )
             embed = discord.Embed(
                 title=f"{context.author.name}의 SID를 조회합니다.",
                 color=self.bot.color_main,
@@ -282,7 +297,7 @@ class Display(commands.Cog, name="display"):
     )
     async def view_sid(self, context: Context):
         if os.path.isfile(
-                f"{self.bot.abs_path}/database/users/{context.author.id}.json"
+            f"{self.bot.abs_path}/database/users/{context.author.id}.json"
         ):
             view = HouseInfoView(self.bot, context.author, context)
             await context.send("조회할 자신의 집을 선택해주세요.", view=view)
@@ -300,7 +315,7 @@ class Display(commands.Cog, name="display"):
     )
     async def view_state_info(self, context: Context):
         if os.path.isfile(
-                f"{self.bot.abs_path}/database/users/{context.author.id}.json"
+            f"{self.bot.abs_path}/database/users/{context.author.id}.json"
         ):
             view = StateInfoOptionsView(self.bot, context.author, context)
             await context.send("조회할 주를 선택해주세요.", view=view)

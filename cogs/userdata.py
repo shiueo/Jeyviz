@@ -66,7 +66,13 @@ class Userdata(commands.Cog, name="userdata"):
             message = await context.send(embed=embed, view=choice)
             await choice.wait()
             if choice.value:
-                create_user(self.bot.abs_path, self.bot.config, self.bot.logger, context.author.id, context.author.name)
+                create_user(
+                    self.bot.abs_path,
+                    self.bot.config,
+                    self.bot.logger,
+                    context.author.id,
+                    context.author.name,
+                )
                 embed = discord.Embed(
                     title="성공",
                     description="성공적으로 SID를 부여하였습니다!",
