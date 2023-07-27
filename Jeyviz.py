@@ -34,7 +34,7 @@ bot.color_cancel = int(config["color_cancel"], 16)
 bot.dev_banner_url = config["dev_banner_url"]
 bot.owners = config["owners"]
 bot.money_unit = config["money_unit"]
-bot.announce_channel = config["announcing_channel"] 
+bot.announce_channel = config["announcing_channel"]
 
 
 logger = logging.getLogger("Jeyviz_bot")
