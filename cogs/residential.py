@@ -42,13 +42,23 @@ class HouseInfoOptions(discord.ui.Select):
 
     async def callback(self, interaction: discord.Interaction):
         user_choice = self.values[0]
-        house_region, house_type = edit_house_name(self.bot.abs_path, self.context.author.id, user_choice, f"{self.bot.abs_path}/database/residential/{self.context.author.id}/{user_choice}.json", self.new_name)
+        house_region, house_type = edit_house_name(
+            self.bot.abs_path,
+            self.context.author.id,
+            user_choice,
+            f"{self.bot.abs_path}/database/residential/{self.context.author.id}/{user_choice}.json",
+            self.new_name,
+        )
         embed = discord.Embed(
-            title=f"{user_choice} 수정 완료.", description=f"{user_choice} -> {self.new_name}", color=self.bot.color_main
+            title=f"{user_choice} 수정 완료.",
+            description=f"{user_choice} -> {self.new_name}",
+            color=self.bot.color_main,
         )
         await interaction.response.edit_message(embed=embed, content=None, view=None)
         announce_channel = self.bot.get_channel(self.bot.announce_channel)
-        await announce_channel.send(f"{self.context.author.name}님 소유의 {house_region}: {user_choice} ({house_type})의 이름이 {self.new_name}으로 바뀌었습니다.")
+        await announce_channel.send(
+            f"{self.context.author.name}님 소유의 {house_region}: {user_choice} ({house_type})의 이름이 {self.new_name}으로 바뀌었습니다."
+        )
 
 
 class HouseInfoView(discord.ui.View):
@@ -78,13 +88,26 @@ class Residential(commands.Cog, name="residential"):
             await context.send(embed=embed)
 
     @house.command(name="이름_수정", description="소유한 집의 이름을 주어진 값으로 수정합니다.")
-    async def change_name(self, context: Context, new_house_name: app_commands.Range[str, 1, 12]):
+    async def change_name(
+        self, context: Context, new_house_name: app_commands.Range[str, 1, 12]
+    ):
         if os.path.isfile(
-                f"{self.bot.abs_path}/database/users/{context.author.id}.json"
+            f"{self.bot.abs_path}/database/users/{context.author.id}.json"
         ):
-            if len(os.listdir(f"{self.bot.abs_path}/database/residential/{context.author.id}")) > 0:
-                if not os.path.isfile(f"{self.bot.abs_path}/database/residential/{context.author.id}/{new_house_name}.json"):
-                    view = HouseInfoView(self.bot, context.author, context, new_house_name)
+            if (
+                len(
+                    os.listdir(
+                        f"{self.bot.abs_path}/database/residential/{context.author.id}"
+                    )
+                )
+                > 0
+            ):
+                if not os.path.isfile(
+                    f"{self.bot.abs_path}/database/residential/{context.author.id}/{new_house_name}.json"
+                ):
+                    view = HouseInfoView(
+                        self.bot, context.author, context, new_house_name
+                    )
                     await context.send("이름을 바꿀 자신의 집을 선택해주세요.", view=view)
                 else:
                     embed = discord.Embed(
