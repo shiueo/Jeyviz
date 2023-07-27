@@ -31,7 +31,6 @@ def create_user(path, config, logger, author_id, author_name):
         "owned_company": [],
         "employed_company": [],
         "primary_house": house_name,
-        "owned_house": [house_name],
         "happiness": random.randint(50, 100),
         "health": random.randint(50, 100),
     }

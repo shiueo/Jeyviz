@@ -1,3 +1,4 @@
+import os
 import random
 
 from essentials.json_util import json_open, json_dump
@@ -19,19 +20,19 @@ def create_house(path, config, region, author_id, house_name, house_type):
         "cost": int(
             state_data[f"{house_type}_min"]
             * (
-                1
-                + (
-                    (
-                        abs(
-                            random.randint(
-                                state_data[f"residential_weight"] - 30,
-                                state_data[f"residential_weight"] + 30,
+                    1
+                    + (
+                            (
+                                abs(
+                                    random.randint(
+                                        state_data[f"residential_weight"] - 30,
+                                        state_data[f"residential_weight"] + 30,
+                                    )
+                                )
                             )
-                        )
+                            / 5000
                     )
-                    / 5000
-                )
-                ** 1.08
+                    ** 1.08
             )
         ),
     }
@@ -41,3 +42,15 @@ def create_house(path, config, region, author_id, house_name, house_type):
     json_dump(house_data, house_json_path)
     json_dump(region_data, f"{path}/database/regions/{region}.json")
     json_dump(state_data, f"{path}/database/states/{region_state}.json")
+
+
+def edit_house_name(path, author_id, old_name, target_house_path, new_name):
+    user_data = json_open(f"{path}/database/users/{author_id}.json")
+    if user_data['primary_house'] == old_name:
+        user_data['primary_house'] = old_name
+        json_dump(user_data, f"{path}/database/users/{author_id}.json")
+    house_data = json_open(target_house_path)
+    house_data['name'] = new_name
+    os.remove(target_house_path)
+    json_dump(house_data, f"{path}/database/residential/{author_id}/{new_name}.json")
+    return house_data['region'], house_data['house_type']

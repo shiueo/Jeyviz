@@ -294,8 +294,8 @@ class ForDev(commands.Cog, name="for_dev"):
                 title="Reset Everything", description=None, color=self.bot.color_main
             )
             embed.add_field(name="LOG", value=log_msg, inline=True)
-            announce_channel = self.bot.get_channel(self.bot.announce_channel)
             await context.send(embed=embed)
+            announce_channel = self.bot.get_channel(self.bot.announce_channel)
             await announce_channel.send(embed=embed)
         else:
             embed = discord.Embed(

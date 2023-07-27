@@ -79,6 +79,8 @@ class Userdata(commands.Cog, name="userdata"):
                     color=self.bot.color_success,
                 )
                 await message.edit(embed=embed, view=None, content=None)
+                announce_channel = self.bot.get_channel(self.bot.announce_channel)
+                await announce_channel.send(f"{context.author.name}님께서 Natzhashite에 정착하셨습니다!")
             else:
                 embed = discord.Embed(
                     title="취소", description="취소하셨습니다.", color=self.bot.color_cancel
