@@ -36,7 +36,6 @@ bot.owners = config["owners"]
 bot.money_unit = config["money_unit"]
 bot.announce_channel = config["announcing_channel"]
 
-
 logger = logging.getLogger("Jeyviz_bot")
 logger.setLevel(logging.INFO)
 
@@ -65,6 +64,7 @@ async def on_ready():
     bot.logger.info("-------------------")
     bot.logger.info("Syncing commands globally...")
     status_task.start()
+    ein_h_task.start()
     await bot.tree.sync()
 
 
@@ -119,6 +119,14 @@ async def load_cogs():
 async def status_task():
     statuses = ["with you!", "with shiüo!", "with users!", "Geometry Dash", "Osu!"]
     await bot.change_presence(activity=discord.Game(random.choice(statuses)))
+
+
+@tasks.loop(minutes=5.0)
+async def ein_h_task():
+    announce_channel = bot.get_channel(bot.announce_channel)
+    await announce_channel.send(
+        f"1시간마다 실행되는 작업들입니다. 주식 값 업데이트 / 집 시세 업데이트 등등이 실행됩니다."
+    )
 
 
 asyncio.run(load_cogs())
