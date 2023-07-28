@@ -13,9 +13,8 @@
 
 ## 📝 Table of Contents
 - [About](#about)
-- [Usage](#usage)
 - [TODO](../TODO.md)
-- [Contributing](../CONTRIBUTING.md)
+- [Contributors](#contributors)
 - [Authors](#authors)
 
 ## 😌 About <a name = "about"></a>
