@@ -125,7 +125,7 @@ async def status_task():
 async def ein_h_task():
     announce_channel = bot.get_channel(bot.announce_channel)
     await announce_channel.send(
-        f"1시간마다 실행되는 작업들입니다. 주식 값 업데이트 / 집 시세 업데이트 등등이 실행됩니다."
+        f"5분마다 실행되는 작업들입니다. 주식 값 업데이트 / 집 시세 업데이트 등등이 실행됩니다."
     )
 
 

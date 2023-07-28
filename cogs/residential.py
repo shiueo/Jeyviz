@@ -57,7 +57,7 @@ class HouseInfoOptions(discord.ui.Select):
         await interaction.response.edit_message(embed=embed, content=None, view=None)
         announce_channel = self.bot.get_channel(self.bot.announce_channel)
         await announce_channel.send(
-            f"{self.context.author.name}님 소유의 {house_region} 지역 {user_choice} ({house_type})의 이름이 {self.new_name}으로 바뀌었습니다."
+            f"``{self.context.author.name}``님 소유의 ``{house_region}`` 지역 ``{user_choice} ({house_type})``의 이름이 ``{self.new_name}``으로 바뀌었습니다."
         )
 
 
