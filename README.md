@@ -28,7 +28,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 - Developers
   - Full-stack
     - [@shiüo](https://linktr.ee/shiueo)
-  - Quality Assurance Engineer
+  - Quality Assurance
     - [@starcea](https://github.com/star0202)
 - Illustrators
   - [Highwater]()
