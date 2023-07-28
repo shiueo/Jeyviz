@@ -28,6 +28,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 - Developers
   - [@shiüo](https://linktr.ee/shiueo)
   - [@starcea](https://github.com/star0202)
+  - [@니은](https://github.com/NieunA)
 - Illustrators
   - [Highwater]()
   
