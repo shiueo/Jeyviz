@@ -23,7 +23,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 ## Contributors <a name="contributors"></a>
 - Planning Team
   - [@shiüo](https://linktr.ee/shiueo)
-  - [@Siro](https://whitet.dev/)
+  - [@Sirø](https://whitet.dev/)
 - Developers
   - [@shiüo](https://linktr.ee/shiueo)
   - [@starcea](https://github.com/star0202)
