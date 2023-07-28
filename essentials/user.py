@@ -40,3 +40,4 @@ def create_user(path, config, logger, author_id, author_name):
     logger.info(
         f"New User {author_name} Joined! - {chosen_region} - {chosen_house_type}"
     )
+    return chosen_region

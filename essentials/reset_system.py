@@ -4,7 +4,6 @@ import shutil
 
 
 def reset_system(path, config):
-    log_message = []
     shutil.rmtree(f"{path}/database")
 
     os.mkdir(f"{path}/database")
@@ -48,83 +47,53 @@ def reset_system(path, config):
         state_init_detachedhouse_residential_score = eval(
             f"config['{state}_단독주택_residential_score']"
         )
-        state_init_detachedhouse_residential_weight = eval(
-            f"config['{state}_단독주택_residential_weight']"
-        )
 
         state_init_townhouse_min = eval(f"config['{state}_연립주택_min']")
         state_init_townhouse_residential_score = eval(
             f"config['{state}_연립주택_residential_score']"
-        )
-        state_init_townhouse_residential_weight = eval(
-            f"config['{state}_연립주택_residential_weight']"
         )
 
         state_init_apartment_min = eval(f"config['{state}_아파트_min']")
         state_init_apartment_residential_score = eval(
             f"config['{state}_아파트_residential_score']"
         )
-        state_init_apartment_residential_weight = eval(
-            f"config['{state}_아파트_residential_weight']"
-        )
 
         state_init_cottage_min = eval(f"config['{state}_별장_min']")
         state_init_cottage_residential_score = eval(
             f"config['{state}_별장_residential_score']"
-        )
-        state_init_cottage_residential_weight = eval(
-            f"config['{state}_별장_residential_weight']"
         )
 
         state_init_terracehouse_min = eval(f"config['{state}_테라스하우스_min']")
         state_init_terracehouse_residential_score = eval(
             f"config['{state}_테라스하우스_residential_score']"
         )
-        state_init_terracehouse_residential_weight = eval(
-            f"config['{state}_테라스하우스_residential_weight']"
-        )
 
         state_init_oneroom_min = eval(f"config['{state}_원룸_min']")
         state_init_oneroom_residential_score = eval(
             f"config['{state}_원룸_residential_score']"
-        )
-        state_init_oneroom_residential_weight = eval(
-            f"config['{state}_원룸_residential_weight']"
         )
 
         state_init_basementhouse_min = eval(f"config['{state}_반지하_min']")
         state_init_basementhouse_residential_score = eval(
             f"config['{state}_반지하_residential_score']"
         )
-        state_init_basementhouse_residential_weight = eval(
-            f"config['{state}_반지하_residential_weight']"
-        )
-
-        state_init_residential_weight = eval(f"config['{state}_residential_weight']")
 
         data = {
             "단독주택_min": state_init_detachedhouse_min,
             "단독주택_residential_score": state_init_detachedhouse_residential_score,
-            "단독주택_residential_weight": state_init_detachedhouse_residential_weight,
             "연립주택_min": state_init_townhouse_min,
             "연립주택_residential_score": state_init_townhouse_residential_score,
-            "연립주택_residential_weight": state_init_townhouse_residential_weight,
             "아파트_min": state_init_apartment_min,
             "아파트_residential_score": state_init_apartment_residential_score,
-            "아파트_residential_weight": state_init_apartment_residential_weight,
             "별장_min": state_init_cottage_min,
             "별장_residential_score": state_init_cottage_residential_score,
-            "별장_residential_weight": state_init_cottage_residential_weight,
             "테라스하우스_min": state_init_terracehouse_min,
             "테라스하우스_residential_score": state_init_terracehouse_residential_score,
-            "테라스하우스_residential_weight": state_init_terracehouse_residential_weight,
             "원룸_min": state_init_oneroom_min,
             "원룸_residential_score": state_init_oneroom_residential_score,
-            "원룸_residential_weight": state_init_oneroom_residential_weight,
             "반지하_min": state_init_basementhouse_min,
             "반지하_residential_score": state_init_basementhouse_residential_score,
-            "반지하_residential_weight": state_init_basementhouse_residential_weight,
-            "residential_weight": state_init_residential_weight,
+            "inflation": 0,
         }
         with open(f"{path}/database/states/{state}.json", "w", encoding="utf8") as f:
             json.dump(data, f, indent="\t", ensure_ascii=False)

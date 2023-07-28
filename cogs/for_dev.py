@@ -290,13 +290,9 @@ class ForDev(commands.Cog, name="for_dev"):
     async def dev_reset_everything(self, context: Context):
         if str(context.author.id) in self.bot.owners:
             log_msg = reset_system(self.bot.abs_path, self.bot.config)
-            embed = discord.Embed(
-                title="Reset Everything", description=None, color=self.bot.color_main
-            )
-            embed.add_field(name="LOG", value=log_msg, inline=True)
-            await context.send(embed=embed)
+            await context.send(log_msg)
             announce_channel = self.bot.get_channel(self.bot.announce_channel)
-            await announce_channel.send(embed=embed)
+            await announce_channel.send("# DEV: " + log_msg)
         else:
             embed = discord.Embed(
                 title="오류.", description="당신은 DEV계열이 아닙니다.", color=self.bot.color_cancel

@@ -1,3 +1,5 @@
+import random
+
 states = [
     "Schtarn",
     "Ashan",
@@ -19,8 +21,7 @@ jsonstring = ""
 for state in states:
     jsonstring += f'"__{state}_law_residential_min__":"-----------------------------------------------------------------------------------------------------",\n'
     for residential_type in residential_types:
-        jsonstring += f'"{state}_{residential_type}_min": 0,\n'
-        jsonstring += f'"{state}_{residential_type}_residential_score": 0,\n'
-        jsonstring += f'"{state}_{residential_type}_residential_weight": 0,\n'
-    jsonstring += f'"{state}_residential_weight": 0,\n'
+        val = random.randint(500000000, 3000000000)
+        jsonstring += f'"{state}_{residential_type}_min": {val},\n'
+        jsonstring += f'"{state}_{residential_type}_residential_score": {round(val/10000000, 2)},\n'
 print(jsonstring)

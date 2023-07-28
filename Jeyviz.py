@@ -10,6 +10,8 @@ import discord as discord
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot, Context
 
+from essentials.functions import inflation_function
+from essentials.json_util import json_open, json_dump
 from utils.utils_logger import LoggingFormatter
 
 if not os.path.isfile("config.json"):
@@ -35,6 +37,7 @@ bot.dev_banner_url = config["dev_banner_url"]
 bot.owners = config["owners"]
 bot.money_unit = config["money_unit"]
 bot.announce_channel = config["announcing_channel"]
+bot.system_types = config["system_types"]
 
 logger = logging.getLogger("Jeyviz_bot")
 logger.setLevel(logging.INFO)
@@ -64,7 +67,7 @@ async def on_ready():
     bot.logger.info("-------------------")
     bot.logger.info("Syncing commands globally...")
     status_task.start()
-    ein_h_task.start()
+    update_inflation.start()
     await bot.tree.sync()
 
 
@@ -121,13 +124,25 @@ async def status_task():
     await bot.change_presence(activity=discord.Game(random.choice(statuses)))
 
 
-@tasks.loop(minutes=5.0)
-async def ein_h_task():
-    announce_channel = bot.get_channel(bot.announce_channel)
-    await announce_channel.send(
-        f"5분마다 실행되는 작업들입니다. 주식 값 업데이트 / 집 시세 업데이트 등등이 실행됩니다."
-    )
+@tasks.loop(minutes=1.0)
+async def update_inflation():
+    bot.logger.info(f"================= UPDATE INFLATION =================")
+    states = bot.config['states']
+    for state in states:
+        state_data = json_open(f"{bot.abs_path}/database/states/{state}.json")
+        regions = bot.config[f'{state}_regions']
+        score = 0
+        for region in regions:
+            region_data = json_open(f"{bot.abs_path}/database/regions/{region}.json")
+            for system_type in bot.system_types:
+                score += eval(f"region_data['{system_type}']")
 
+        inflation_val = inflation_function(score)
+        state_data['inflation'] = inflation_val
+        bot.logger.info(f"{state} -> INFLATION_VAL: {inflation_val}")
+        json_dump(state_data, f"{bot.abs_path}/database/states/{state}.json")
+
+    bot.logger.info(f"인플레이션률 계산 완료.")
 
 asyncio.run(load_cogs())
 bot.run(config["token"])

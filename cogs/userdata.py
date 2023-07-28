@@ -66,7 +66,7 @@ class Userdata(commands.Cog, name="userdata"):
             message = await context.send(embed=embed, view=choice)
             await choice.wait()
             if choice.value:
-                create_user(
+                region = create_user(
                     self.bot.abs_path,
                     self.bot.config,
                     self.bot.logger,
@@ -81,7 +81,7 @@ class Userdata(commands.Cog, name="userdata"):
                 await message.edit(embed=embed, view=None, content=None)
                 announce_channel = self.bot.get_channel(self.bot.announce_channel)
                 await announce_channel.send(
-                    f"{context.author.name}님께서 Natzhashite에 정착하셨습니다!"
+                    f"{context.author.name}님께서 Natzhashite, {region}에 정착하셨습니다!"
                 )
             else:
                 embed = discord.Embed(

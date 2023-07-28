@@ -1,6 +1,7 @@
 import os
 import random
 
+from essentials.functions import house_cost_function
 from essentials.json_util import json_open, json_dump
 
 
@@ -17,27 +18,9 @@ def create_house(path, config, region, author_id, house_name, house_type):
         "name": house_name,
         "region": region,
         "house_type": house_type,
-        "cost": int(
-            state_data[f"{house_type}_min"]
-            * (
-                1
-                + (
-                    (
-                        abs(
-                            random.randint(
-                                state_data[f"residential_weight"] - 30,
-                                state_data[f"residential_weight"] + 30,
-                            )
-                        )
-                    )
-                    / 5000
-                )
-                ** 1.08
-            )
-        ),
+        "cost": house_cost_function(minimum_cost=state_data[f"{house_type}_min"], inflation=state_data['inflation']),
     }
     region_data["residential"] += state_data[f"{house_type}_residential_score"]
-    state_data["residential_weight"] += state_data[f"{house_type}_residential_weight"]
 
     json_dump(house_data, house_json_path)
     json_dump(region_data, f"{path}/database/regions/{region}.json")
