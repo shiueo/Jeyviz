@@ -26,10 +26,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
   - [@shiüo](https://linktr.ee/shiueo)
   - [@Siro](https://whitet.dev/)
 - Developers
-  - Full-stack
-    - [@shiüo](https://linktr.ee/shiueo)
-  - Quality Assurance
-    - [@starcea](https://github.com/star0202)
+  - [@shiüo](https://linktr.ee/shiueo)
+  - [@starcea](https://github.com/star0202)
 - Illustrators
   - [Highwater]()
   
