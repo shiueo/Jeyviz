@@ -47,7 +47,7 @@ def create_house(path, config, region, author_id, house_name, house_type):
 def edit_house_name(path, author_id, old_name, target_house_path, new_name):
     user_data = json_open(f"{path}/database/users/{author_id}.json")
     if user_data["primary_house"] == old_name:
-        user_data["primary_house"] = old_name
+        user_data["primary_house"] = new_name
         json_dump(user_data, f"{path}/database/users/{author_id}.json")
     house_data = json_open(target_house_path)
     house_data["name"] = new_name
