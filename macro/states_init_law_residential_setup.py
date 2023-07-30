@@ -21,7 +21,7 @@ jsonstring = ""
 for state in states:
     jsonstring += f'"__{state}_law_residential_min__":"-----------------------------------------------------------------------------------------------------",\n'
     for residential_type in residential_types:
-        val = random.randint(500000000, 3000000000)
+        val = random.randint(200000, 800000)
         jsonstring += f'"{state}_{residential_type}_min": {val},\n'
-        jsonstring += f'"{state}_{residential_type}_residential_score": {round(val/10000000, 2)},\n'
+        jsonstring += f'"{state}_{residential_type}_residential_score": {round(val/10000, 2)},\n'
 print(jsonstring)

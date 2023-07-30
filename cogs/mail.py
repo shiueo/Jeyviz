@@ -143,6 +143,7 @@ class Mail(commands.Cog, name="mail"):
             await context.send(embed=embed)
 
     @mail.command(name="발송", description="주어진 사람에게 메일을 발송합니다.")
+    @commands.cooldown(1, 8, commands.BucketType.user)
     async def send_mail(
         self,
         context: Context,

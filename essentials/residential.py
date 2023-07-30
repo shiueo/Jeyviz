@@ -40,3 +40,11 @@ def edit_house_name(path, author_id, old_name, target_house_path, new_name):
     os.remove(target_house_path)
     json_dump(house_data, f"{path}/database/residential/{author_id}/{new_name}.json")
     return house_data["region"], house_data["house_type"]
+
+
+def edit_house_cost(target_house_path, new_cost):
+    house_data = json_open(target_house_path)
+    old_cost = house_data["cost"]
+    house_data["cost"] = new_cost
+    json_dump(house_data, target_house_path)
+    return house_data["region"], house_data["house_type"], old_cost
