@@ -141,30 +141,28 @@ class StatesInfoOptions(discord.ui.Select):
         T_HOSPITAL = []
         T_LEISURE = []
         for region in choice:
-            with open(f"{self.bot.abs_path}/database/regions/{region}.json", "r") as f:
-                data = json.load(f)
-                T_RESIDENTIAL.append(data["residential"])
-                T_CORPORATE.append(data["corporate"])
-                T_INDUSTRIAL.append(data["industrial"])
-                T_NATURAL.append(data["natural"])
-                T_TRAFFIC.append(data["traffic"])
-                T_SECURITY.append(data["security"])
-                T_HOSPITAL.append(data["hospital"])
-                T_LEISURE.append(data["leisure"])
+            data = json_open(f"{self.bot.abs_path}/database/regions/{region}.json")
+            T_RESIDENTIAL.append(data["residential"])
+            T_CORPORATE.append(data["corporate"])
+            T_INDUSTRIAL.append(data["industrial"])
+            T_NATURAL.append(data["natural"])
+            T_TRAFFIC.append(data["traffic"])
+            T_SECURITY.append(data["security"])
+            T_HOSPITAL.append(data["hospital"])
+            T_LEISURE.append(data["leisure"])
 
         other_regions = [x for x in self.bot.config["regions"] if x not in choice]
 
         for region in other_regions:
-            with open(f"{self.bot.abs_path}/database/regions/{region}.json", "r") as f:
-                data = json.load(f)
-                RESIDENTIAL.append(data["residential"])
-                CORPORATE.append(data["corporate"])
-                INDUSTRIAL.append(data["industrial"])
-                NATURAL.append(data["natural"])
-                TRAFFIC.append(data["traffic"])
-                SECURITY.append(data["security"])
-                HOSPITAL.append(data["hospital"])
-                LEISURE.append(data["leisure"])
+            data = json_open(f"{self.bot.abs_path}/database/regions/{region}.json")
+            RESIDENTIAL.append(data["residential"])
+            CORPORATE.append(data["corporate"])
+            INDUSTRIAL.append(data["industrial"])
+            NATURAL.append(data["natural"])
+            TRAFFIC.append(data["traffic"])
+            SECURITY.append(data["security"])
+            HOSPITAL.append(data["hospital"])
+            LEISURE.append(data["leisure"])
 
         RESIDENTIAL += T_RESIDENTIAL
         CORPORATE += T_CORPORATE
