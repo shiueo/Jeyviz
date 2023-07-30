@@ -31,6 +31,7 @@ bot = Bot(
 bot.config = config
 bot.abs_path = os.path.dirname(__file__)
 bot.color_main = int(config["color_main"], 16)
+bot.color_thank = int(config["color_thank"], 16)
 bot.color_success = int(config["color_success"], 16)
 bot.color_cancel = int(config["color_cancel"], 16)
 bot.dev_banner_url = config["dev_banner_url"]
@@ -127,10 +128,10 @@ async def status_task():
 @tasks.loop(minutes=1.0)
 async def update_inflation():
     bot.logger.info(f"================= UPDATE INFLATION =================")
-    states = bot.config['states']
+    states = bot.config["states"]
     for state in states:
         state_data = json_open(f"{bot.abs_path}/database/states/{state}.json")
-        regions = bot.config[f'{state}_regions']
+        regions = bot.config[f"{state}_regions"]
         score = 0
         for region in regions:
             region_data = json_open(f"{bot.abs_path}/database/regions/{region}.json")
@@ -138,11 +139,12 @@ async def update_inflation():
                 score += eval(f"region_data['{system_type}']")
 
         inflation_val = inflation_function(score)
-        state_data['inflation'] = inflation_val
+        state_data["inflation"] = inflation_val
         bot.logger.info(f"{state} -> INFLATION_VAL: {inflation_val}")
         json_dump(state_data, f"{bot.abs_path}/database/states/{state}.json")
 
     bot.logger.info(f"인플레이션률 계산 완료.")
+
 
 asyncio.run(load_cogs())
 bot.run(config["token"])

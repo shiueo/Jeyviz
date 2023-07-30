@@ -13,6 +13,7 @@ idna==3.4
 kiwisolver==1.4.4
 matplotlib==3.7.2
 multidict==6.0.4
+natsort==8.4.0
 numpy==1.25.1
 packaging==23.1
 Pillow==10.0.0

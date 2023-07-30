@@ -54,14 +54,8 @@ class HouseInfoOptions(discord.ui.Select):
             description=None,
             color=self.bot.color_success,
         )
-        embed.add_field(
-            name="수정 전",
-            value=f"{user_choice}"
-        )
-        embed.add_field(
-            name="수정 후",
-            value=f"{self.new_name}"
-        )
+        embed.add_field(name="수정 전", value=f"{user_choice}")
+        embed.add_field(name="수정 후", value=f"{self.new_name}")
         await interaction.response.edit_message(embed=embed, content=None, view=None)
         announce_channel = self.bot.get_channel(self.bot.announce_channel)
         await announce_channel.send(

@@ -4,7 +4,8 @@ import shutil
 
 
 def reset_system(path, config):
-    shutil.rmtree(f"{path}/database")
+    if os.path.isdir(f"{path}/database"):
+        shutil.rmtree(f"{path}/database")
 
     os.mkdir(f"{path}/database")
     os.mkdir(f"{path}/database/regions")
@@ -12,6 +13,7 @@ def reset_system(path, config):
     os.mkdir(f"{path}/database/users")
     os.mkdir(f"{path}/database/viz")
     os.mkdir(f"{path}/database/residential")
+    os.mkdir(f"{path}/database/mails")
 
     for region in config["regions"]:
         region_pos = eval(f"config['{region}_pos']")

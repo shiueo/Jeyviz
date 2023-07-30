@@ -18,7 +18,10 @@ def create_house(path, config, region, author_id, house_name, house_type):
         "name": house_name,
         "region": region,
         "house_type": house_type,
-        "cost": house_cost_function(minimum_cost=state_data[f"{house_type}_min"], inflation=state_data['inflation']),
+        "cost": house_cost_function(
+            minimum_cost=state_data[f"{house_type}_min"],
+            inflation=state_data["inflation"],
+        ),
     }
     region_data["residential"] += state_data[f"{house_type}_residential_score"]
 

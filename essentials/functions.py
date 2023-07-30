@@ -6,4 +6,7 @@ def inflation_function(val):
 
 
 def house_cost_function(minimum_cost, inflation):
-    return int(minimum_cost * (1 + ((abs(random.randint(inflation - 30, inflation + 30))) / 5000) ** 1.13))
+    return int(
+        minimum_cost
+        * (1 + ((abs(random.randint(inflation - 30, inflation + 30))) / 5000) ** 1.13)
+    )

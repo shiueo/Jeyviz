@@ -16,6 +16,9 @@ def create_user(path, config, logger, author_id, author_name):
     if not os.path.isdir(f"{path}/database/residential/{author_id}"):
         os.mkdir(f"{path}/database/residential/{author_id}")
 
+    if not os.path.isdir(f"{path}/database/mails/{author_id}"):
+        os.mkdir(f"{path}/database/mails/{author_id}")
+
     house_name = hashlib.md5(
         str(
             (datetime.datetime.now() - datetime.datetime(1970, 1, 1)).total_seconds()
