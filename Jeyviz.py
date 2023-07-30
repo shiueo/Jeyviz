@@ -4,9 +4,11 @@ import logging
 import os
 import platform
 import random
+import psutil
 import sys
 import discord as discord
 
+from collections import deque
 from discord.ext import commands, tasks
 from discord.ext.commands import Bot, Context
 
@@ -39,6 +41,9 @@ bot.owners = config["owners"]
 bot.money_unit = config["money_unit"]
 bot.announce_channel = config["announcing_channel"]
 bot.system_types = config["system_types"]
+bot.cpu_usage = deque([0] * 60)
+bot.ram_usage = deque([0] * 60)
+bot.disk_usage = deque([0]*60)
 
 logger = logging.getLogger("Jeyviz_bot")
 logger.setLevel(logging.INFO)
@@ -69,6 +74,7 @@ async def on_ready():
     bot.logger.info("Syncing commands globally...")
     status_task.start()
     update_inflation.start()
+    update_status.start()
     await bot.tree.sync()
 
 
@@ -144,6 +150,16 @@ async def update_inflation():
         json_dump(state_data, f"{bot.abs_path}/database/states/{state}.json")
 
     bot.logger.info(f"인플레이션률 계산 완료.")
+
+
+@tasks.loop(seconds=1.0)
+async def update_status():
+    bot.cpu_usage.append(psutil.cpu_percent())
+    bot.cpu_usage.popleft()
+    bot.ram_usage.append(psutil.virtual_memory().percent)
+    bot.ram_usage.popleft()
+    bot.disk_usage.append(psutil.disk_usage('/').percent)
+    bot.disk_usage.popleft()
 
 
 asyncio.run(load_cogs())
