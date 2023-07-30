@@ -22,7 +22,7 @@ class Mail_Paginator(View):
         bot,
         author,
         embeds,
-        timeout=60,
+        timeout=120,
     ):
         super().__init__(timeout=timeout)
         self.bot = bot
@@ -65,7 +65,7 @@ class Mail_Paginator(View):
         )
         embed.set_image(url=self.bot.config["mailing_system_logo_url"])
         embed.set_footer(
-            text="This service is operated with support from Schtarn.",
+            text="This service is operated with support of Schtarn.",
             icon_url=self.bot.config["manager_organization_logo_url"],
         )
         await interaction.response.edit_message(embed=embed, content=None, view=None)
@@ -98,7 +98,7 @@ class Mail(commands.Cog, name="mail"):
         ):
             mails = natsort.natsorted(
                 os.listdir(f"{self.bot.abs_path}/database/mails/{context.author.id}")
-            )
+            )[::-1]
             if len(mails) == 0:
                 embed = discord.Embed(
                     title="아무것도 없습니다! 아무것도요!",
@@ -124,7 +124,7 @@ class Mail(commands.Cog, name="mail"):
                     embed.add_field(name="Date", value=data["date"], inline=False)
                     embed.add_field(name="Content", value=data["content"], inline=False)
                     embed.set_footer(
-                        text="This service is operated with support from Schtarn.",
+                        text="This service is operated with support of Schtarn.",
                         icon_url=self.bot.config["manager_organization_logo_url"],
                     )
                     if data["image"]:
@@ -147,8 +147,8 @@ class Mail(commands.Cog, name="mail"):
         self,
         context: Context,
         receiver_id: str,
-        title: str,
-        content: str,
+        title: app_commands.Range[str, 1, 256],
+        content: app_commands.Range[str, 1, 1024],
         image_url: Optional[str] = "",
     ):
         if os.path.isfile(
@@ -169,7 +169,7 @@ class Mail(commands.Cog, name="mail"):
                     color=self.bot.color_success,
                 )
                 embed.set_footer(
-                    text="This service is operated with support from Schtarn.",
+                    text="This service is operated with support of Schtarn.",
                     icon_url=self.bot.config["manager_organization_logo_url"],
                 )
                 await context.send(embed=embed)
