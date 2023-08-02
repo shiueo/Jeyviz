@@ -176,61 +176,6 @@ class ForDev(commands.Cog, name="for_dev"):
             )
             await context.send(embed=embed)
 
-    @dev.command(name="add_money_to", description=f"해당 유저의 SID에 주어진 수만큼 화폐를 추가합니다.")
-    async def dev_sid_add_money_to(
-        self, context: Context, user: discord.User, money: int
-    ):
-        if str(context.author.id) in self.bot.owners:
-            member = context.guild.get_member(
-                user.id
-            ) or await context.guild.fetch_member(user.id)
-            embed = discord.Embed(
-                title="금액 충전",
-                description=f"{member}의 SID에 {money} {self.bot.money_unit}를 추가합니다.",
-                color=self.bot.color_main,
-            )
-            choice = YesOrNo(context.author)
-            message = await context.send(embed=embed, view=choice)
-            await choice.wait()
-            if choice.value:
-                if os.path.isfile(
-                    f"{self.bot.abs_path}/database/users/{member.id}.json"
-                ):
-                    with open(
-                        f"{self.bot.abs_path}/database/users/{member.id}.json", "r"
-                    ) as f:
-                        data = json.load(f)
-                        data["money"] += money
-
-                    with open(
-                        f"{self.bot.abs_path}/database/users/{member.id}.json", "w"
-                    ) as f:
-                        json.dump(data, f)
-
-                    embed = discord.Embed(
-                        title="성공",
-                        description=f"성공적으로 {money} {self.bot.money_unit}를 {member}의 SID에 추가하였습니다.",
-                        color=self.bot.color_success,
-                    )
-                    await message.edit(embed=embed, view=None, content=None)
-                else:
-                    embed = discord.Embed(
-                        title="오류.",
-                        description=f"{member}의 SID는 존재하지 않습니다.",
-                        color=self.bot.color_cancel,
-                    )
-                    await message.edit(embed=embed, view=None, content=None)
-            else:
-                embed = discord.Embed(
-                    title="취소", description="취소하셨습니다.", color=self.bot.color_cancel
-                )
-                await message.edit(embed=embed, view=None, content=None)
-        else:
-            embed = discord.Embed(
-                title="오류.", description="당신은 DEV계열이 아닙니다.", color=self.bot.color_cancel
-            )
-            await context.send(embed=embed)
-
     @dev.command(name="natzhashite_상태", description="Natzhashite의 상태를 확인합니다.")
     async def dev_check_natzhashite(self, context: Context):
         if str(context.author.id) in self.bot.owners:

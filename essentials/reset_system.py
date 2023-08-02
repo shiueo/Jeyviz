@@ -2,6 +2,8 @@ import json
 import os.path
 import shutil
 
+from essentials.json_util import json_dump
+
 
 def reset_system(path, config):
     if os.path.isdir(f"{path}/database"):
@@ -14,6 +16,11 @@ def reset_system(path, config):
     os.mkdir(f"{path}/database/viz")
     os.mkdir(f"{path}/database/residential")
     os.mkdir(f"{path}/database/mails")
+
+    natzhashite_data = {
+        "money": 0
+    }
+    json_dump(natzhashite_data, f"{path}/database/natzhashite.json")
 
     for region in config["regions"]:
         region_pos = eval(f"config['{region}_pos']")
