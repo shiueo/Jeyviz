@@ -7,7 +7,9 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Context
 
+from essentials.json_util import json_open
 from essentials.user import create_user, delete_user
+from essentials.utils_numunit import format_number_with_units
 
 
 class YesOrNo(discord.ui.View):
@@ -133,6 +135,49 @@ class SID(commands.Cog, name="sid"):
             embed = discord.Embed(
                 title="SID가 존재하지 않습니다.",
                 description="SID 요청을 위해서는 ``sid 신청`` 명령어를 사용해주세요.",
+                color=self.bot.color_cancel,
+            )
+            await context.send(embed=embed)
+
+    @sid.command(
+        name="조회",
+        description="자신의 SID를 조회합니다.",
+    )
+    async def view_sid(self, context: Context):
+        if os.path.isfile(
+                f"{self.bot.abs_path}/database/users/{context.author.id}.json"
+        ):
+            user_data = json_open(
+                f"{self.bot.abs_path}/database/users/{context.author.id}.json"
+            )
+            primary_house = user_data["primary_house"]
+            residential_data = json_open(
+                f"{self.bot.abs_path}/database/residential/{context.author.id}/{primary_house}.json"
+            )
+            embed = discord.Embed(
+                title=f"{context.author.name}의 SID를 조회합니다.",
+                color=self.bot.color_main,
+            )
+            embed.set_thumbnail(url=context.author.avatar.url)
+            embed.add_field(
+                name="재산",
+                value=f"{format_number_with_units(bot=self.bot, number=user_data['money'])}",
+                inline=True,
+            )
+
+            embed.add_field(
+                name="현 거주지",
+                value=f"{residential_data['region']}-{residential_data['name']} ({residential_data['house_type']})",
+            )
+
+            embed.add_field(name="행복도", value=user_data["happiness"])
+
+            embed.add_field(name="건강도", value=user_data["health"])
+            await context.send(embed=embed)
+        else:
+            embed = discord.Embed(
+                title="SID가 존재하지 않습니다.",
+                description="SID 신청을 위해서는 ``sid 신청`` 명령어를 사용해주세요.",
                 color=self.bot.color_cancel,
             )
             await context.send(embed=embed)
