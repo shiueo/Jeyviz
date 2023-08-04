@@ -2,9 +2,10 @@ import datetime
 import os
 import random
 import hashlib
+import shutil
 
-from essentials.json_util import json_dump
-from essentials.residential import create_house
+from essentials.json_util import json_dump, json_open
+from essentials.residential import create_house, delete_house
 
 
 def create_user(path, config, logger, author_id, author_name):
@@ -44,3 +45,23 @@ def create_user(path, config, logger, author_id, author_name):
         f"New User {author_name} Joined! - {chosen_region} - {chosen_house_type}"
     )
     return chosen_region
+
+
+def delete_user(path, config, logger, author_id, author_name):
+    try:
+        json_path = f"{path}/database/users/{author_id}.json"
+        user_data = json_open(json_path)
+
+        if os.path.isdir(f"{path}/database/mails/{author_id}"):
+            shutil.rmtree(f"{path}/database/mails/{author_id}")
+
+        delete_house(path=path, config=config, author_id=author_id, house_name=user_data['primary_house'])
+        if os.path.isdir(f"{path}/database/residential/{author_id}"):
+            shutil.rmtree(f"{path}/database/residential/{author_id}")
+
+        os.remove(json_path)
+        logger.info(
+            f"The User {author_name} has Left"
+        )
+    except Exception as e:
+        print(e)

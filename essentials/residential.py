@@ -27,7 +27,22 @@ def create_house(path, config, region, author_id, house_name, house_type):
 
     json_dump(house_data, house_json_path)
     json_dump(region_data, f"{path}/database/regions/{region}.json")
-    json_dump(state_data, f"{path}/database/states/{region_state}.json")
+
+
+def delete_house(path, config, author_id, house_name):
+    house_json_path = f"{path}/database/residential/{author_id}/{house_name}.json"
+    house_data = json_open(house_json_path)
+
+    region = house_data['region']
+    region_data = json_open(f"{path}/database/regions/{region}.json")
+
+    region_state = region_data["parent"]
+    state_data = json_open(f"{path}/database/states/{region_state}.json")
+
+    region_data["residential"] -= state_data[f"{house_data['house_type']}_residential_score"]
+
+    os.remove(house_json_path)
+    json_dump(region_data, f"{path}/database/regions/{region}.json")
 
 
 def edit_house_name(path, author_id, old_name, target_house_path, new_name):

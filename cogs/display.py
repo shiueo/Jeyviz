@@ -6,10 +6,10 @@ import numpy as np
 from discord.ext import commands
 from discord.ext.commands import Context
 
-from essentials.displayView import DisplayHouseInfoView, DisplayStateInfoOptionsView
+from essentials.displayView import DisplayStateInfoOptionsView
 from essentials.draw_regions import draw_regions
 from essentials.json_util import json_open
-from essentials.utils_numunit import number_formatter
+from essentials.utils_numunit import format_number_with_units
 
 
 class Display(commands.Cog, name="display"):
@@ -50,7 +50,7 @@ class Display(commands.Cog, name="display"):
             embed.set_thumbnail(url=context.author.avatar.url)
             embed.add_field(
                 name="재산",
-                value=f"{number_formatter(str(user_data['money']))} {self.bot.money_unit}",
+                value=f"{format_number_with_units(bot=self.bot, number=user_data['money'])}",
                 inline=True,
             )
 
@@ -63,24 +63,6 @@ class Display(commands.Cog, name="display"):
 
             embed.add_field(name="건강도", value=user_data["health"])
             await context.send(embed=embed)
-        else:
-            embed = discord.Embed(
-                title="SID가 존재하지 않습니다.",
-                description="SID 신청을 위해서는 ``sid 신청`` 명령어를 사용해주세요.",
-                color=self.bot.color_cancel,
-            )
-            await context.send(embed=embed)
-
-    @view.command(
-        name="집",
-        description="자신의 SID를 조회합니다.",
-    )
-    async def view_sid(self, context: Context):
-        if os.path.isfile(
-            f"{self.bot.abs_path}/database/users/{context.author.id}.json"
-        ):
-            view = DisplayHouseInfoView(self.bot, context.author, context)
-            await context.send("조회할 자신의 집을 선택해주세요.", view=view)
         else:
             embed = discord.Embed(
                 title="SID가 존재하지 않습니다.",

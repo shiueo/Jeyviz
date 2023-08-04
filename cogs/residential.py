@@ -6,7 +6,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord.ext.commands import Context
 
-from essentials.residentialView import HouseNameView, HouseCostView
+from essentials.residentialView import HouseNameView, HouseCostView, DisplayHouseInfoView
 
 
 class Residential(commands.Cog, name="residential"):
@@ -27,14 +27,14 @@ class Residential(commands.Cog, name="residential"):
 
     @house.command(name="이름_수정", description="소유한 집의 이름을 주어진 값으로 수정합니다.")
     async def change_name(
-        self, context: Context, new_house_name: app_commands.Range[str, 1, 12]
+            self, context: Context, new_house_name: app_commands.Range[str, 1, 12]
     ):
         if os.path.isfile(
-            f"{self.bot.abs_path}/database/users/{context.author.id}.json"
+                f"{self.bot.abs_path}/database/users/{context.author.id}.json"
         ):
             if os.listdir(f"{self.bot.abs_path}/database/residential/{context.author.id}"):
                 if not os.path.isfile(
-                    f"{self.bot.abs_path}/database/residential/{context.author.id}/{new_house_name}.json"
+                        f"{self.bot.abs_path}/database/residential/{context.author.id}/{new_house_name}.json"
                 ):
                     view = HouseNameView(
                         self.bot, context.author, context, new_house_name
@@ -87,6 +87,24 @@ class Residential(commands.Cog, name="residential"):
             embed = discord.Embed(
                 title="SID가 존재하지 않습니다.",
                 description="SID 요청을 위해서는 ``sid 신청`` 명령어를 사용해주세요.",
+                color=self.bot.color_cancel,
+            )
+            await context.send(embed=embed)
+
+    @house.command(
+        name="조회",
+        description="자신의 집 정보를 조회합니다.",
+    )
+    async def view_sid(self, context: Context):
+        if os.path.isfile(
+                f"{self.bot.abs_path}/database/users/{context.author.id}.json"
+        ):
+            view = DisplayHouseInfoView(self.bot, context.author, context)
+            await context.send("조회할 자신의 집을 선택해주세요.", view=view)
+        else:
+            embed = discord.Embed(
+                title="SID가 존재하지 않습니다.",
+                description="SID 신청을 위해서는 ``sid 신청`` 명령어를 사용해주세요.",
                 color=self.bot.color_cancel,
             )
             await context.send(embed=embed)

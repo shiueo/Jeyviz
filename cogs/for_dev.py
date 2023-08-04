@@ -6,7 +6,7 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Context
 
-from essentials.utils_numunit import number_formatter
+from essentials.utils_numunit import format_number_with_units
 
 from essentials.reset_system import reset_system
 
@@ -220,7 +220,7 @@ class ForDev(commands.Cog, name="for_dev"):
 
             embed.add_field(
                 name="개인 소유의 전체 재화량",
-                value=f"{number_formatter(str(all_user_money))} {self.bot.money_unit}",
+                value=f"{format_number_with_units(bot=self.bot, number=all_user_money)}",
                 inline=True,
             )
 
@@ -237,7 +237,7 @@ class ForDev(commands.Cog, name="for_dev"):
             log_msg = reset_system(self.bot.abs_path, self.bot.config)
             await context.send(log_msg)
             announce_channel = self.bot.get_channel(self.bot.announce_channel)
-            await announce_channel.send("# DEV: " + log_msg)
+            await announce_channel.send(log_msg)
         else:
             embed = discord.Embed(
                 title="오류.", description="당신은 DEV계열이 아닙니다.", color=self.bot.color_cancel

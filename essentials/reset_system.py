@@ -107,4 +107,4 @@ def reset_system(path, config):
         with open(f"{path}/database/states/{state}.json", "w", encoding="utf8") as f:
             json.dump(data, f, indent="\t", ensure_ascii=False)
 
-    return f"{len(config['regions'])}개의 하위 행정구역 초기화 완료. / {len(config['states'])}개의 주 초기화 완료."
+    return f":exclamation: {len(config['regions'])}개의 하위 행정구역 초기화 완료. / {len(config['states'])}개의 주 초기화 완료."

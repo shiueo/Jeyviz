@@ -7,7 +7,7 @@ import discord
 from discord.ext import commands
 from discord.ext.commands import Context
 
-from essentials.user import create_user
+from essentials.user import create_user, delete_user
 
 
 class YesOrNo(discord.ui.View):
@@ -32,7 +32,7 @@ class YesOrNo(discord.ui.View):
         return interaction.user.id == self.author.id
 
 
-class Userdata(commands.Cog, name="userdata"):
+class SID(commands.Cog, name="sid"):
     def __init__(self, bot):
         self.bot = bot
 
@@ -81,7 +81,7 @@ class Userdata(commands.Cog, name="userdata"):
                 await message.edit(embed=embed, view=None, content=None)
                 announce_channel = self.bot.get_channel(self.bot.announce_channel)
                 await announce_channel.send(
-                    f"{context.author.name}님께서 Natzhashite, {region}에 정착하셨습니다!"
+                    f":wave: ``{context.author.name}`` has settled in Natzhashite, ``{region}``!"
                 )
             else:
                 embed = discord.Embed(
@@ -111,40 +111,19 @@ class Userdata(commands.Cog, name="userdata"):
             message = await context.send(embed=embed, view=choice)
             await choice.wait()
             if choice.value:
-                target_del_house = []
-                with open(
-                    f"{self.bot.abs_path}/database/users/{context.author.id}.json", "r"
-                ) as f:
-                    data = json.load(f)
-                    if data["primary_house"]:
-                        target_del_house.append(data["primary_house"])
-                    if data["owned_house"]:
-                        for i in data["owned_house"]:
-                            target_del_house.append(i)
+                delete_user(path=self.bot.abs_path, config=self.bot.config, logger=self.bot.logger, author_id=context.author.id, author_name=context.author.name)
 
-                if target_del_house:
-                    for i in target_del_house:
-                        with open(
-                            f"{self.bot.abs_path}/database/states/{i[0]}.json", "r"
-                        ) as f:
-                            data2 = json.load(f)
-                            if [i[1], i[2]] in data2["residential"]:
-                                data2["residential"].remove([i[1], i[2]])
-
-                        with open(
-                            f"{self.bot.abs_path}/database/states/{i[0]}.json", "w"
-                        ) as f:
-                            json.dump(data2, f)
-
-                os.remove(
-                    f"{self.bot.abs_path}/database/users/{context.author.id}.json"
-                )
                 embed = discord.Embed(
                     title="성공",
-                    description="성공적으로 SID를 삭제하였습니다.",
+                    description="성공적으로 SID를 삭제하였습니다!",
                     color=self.bot.color_success,
                 )
                 await message.edit(embed=embed, view=None, content=None)
+
+                announce_channel = self.bot.get_channel(self.bot.announce_channel)
+                await announce_channel.send(
+                    f":wave: The User ``{context.author.name}`` has Left"
+                )
             else:
                 embed = discord.Embed(
                     title="취소", description="취소하셨습니다.", color=self.bot.color_cancel
@@ -160,4 +139,4 @@ class Userdata(commands.Cog, name="userdata"):
 
 
 async def setup(bot):
-    await bot.add_cog(Userdata(bot))
+    await bot.add_cog(SID(bot))
